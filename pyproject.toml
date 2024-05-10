@@ -14,6 +14,7 @@ whitenoise = {extras = ["brotli"], version = "^6.6.0"}
 gunicorn = "^22.0.0"
 uvicorn = "^0.29.0"
 python-dotenv = "^1.0.1"
+django-bootstrap5 = "^24.2"
 
 
 [build-system]
