@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+
+{% load i18n %}
+
+{% block content %}
+<h1>{% trans "Users" %}</h1>
+<table class="table table-striped" data-test="urls">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">{% trans "Username" %}</th>
+      <th scope="col">{% trans "Full name" %}</th>
+      <th scope="col">{% trans "Created at" %}</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  {% if users %}
+  <tbody>
+    {% for user in users %}
+    <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.nickname }}</td>
+        <td>{{ user.first_name }} {{ user.last_name }}</td>
+        <td>{{ user.created_at }}</td>
+        <td>
+            <div>
+                <a href="">{% trans "Update" %}</a>
+                <br>
+                <a href="">{% trans "Delete" %}</a>
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  {% endif %}
+</table>
+{% endblock %}

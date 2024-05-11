@@ -5,16 +5,27 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 
+
 {% language 'ru' %}
+
 <body class="min-vh-100 d-flex flex-column">
+
     {% include "elements/navbar.html" %}
 
     {% bootstrap_messages %}
 
-    <main class="flex-grow-1">
-        {% block content %}{% endblock %}
-    </main>
+    <div class="flex-grow-1 row container-fluid">
+        <div class="col-lg-2 col-md-1"></div>
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <main class="m-3">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+        <div class="col-lg-2 col-md-1"></div>
+    </div>
 
     {% include "elements/footer.html" %}
+
 </body>
+
 {% endlanguage %}
