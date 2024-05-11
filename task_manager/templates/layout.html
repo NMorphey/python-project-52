@@ -1,0 +1,20 @@
+{% load django_bootstrap5 %}
+
+{% load i18n %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% language 'ru' %}
+<body class="min-vh-100 d-flex flex-column">
+    {% include "elements/navbar.html" %}
+
+    {% bootstrap_messages %}
+
+    <main class="flex-grow-1">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include "elements/footer.html" %}
+</body>
+{% endlanguage %}
