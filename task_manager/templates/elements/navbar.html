@@ -1,25 +1,23 @@
 {% load i18n %}
 
-<header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <ul class="navbar-nav">
-                <a href="{% url 'main_page' %}" class="navbar-brand">{% trans "Task manager" %}</a>
-                <li class="nav-item"><a href="" class="nav-link">{% trans "Users" %}</a></li>
-                {% if signed_in %}
-                <li class="nav-item"><a href="" class="nav-link">{% trans "Statuses" %}</a></li>
-                <li class="nav-item"><a href="" class="nav-link">{% trans "Lables" %}</a></li>
-                <li class="nav-item"><a href="" class="nav-link">{% trans "Tasks" %}</a></li>
-                {% endif %}
-            </ul>
-            <ul class="navbar-nav ms-auto">
-                {% if signed_in %}
-                <li class="nav-item"><a href="" class="nav-link">{% trans "Log out" %}</a></li>
-                {% endif %} {% if not signed_in %}
-                <li class="nav-item"><a href="" class="nav-link">{% trans "Sign in" %}</a></li>
-                <li class="nav-item"><a href="" class="nav-link">{% trans "Sign up" %}</a></li>
-                {% endif %}
-            </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid" >
+        <ul class="navbar-nav">
+            <a href="{% url 'main_page' %}" class="navbar-brand">{% trans "Task manager" %}</a>
+            <li class="nav-item"><a href="" class="nav-link">{% trans "Users" %}</a></li>
+            {% if signed_in %}
+            <li class="nav-item"><a href="" class="nav-link">{% trans "Statuses" %}</a></li>
+            <li class="nav-item"><a href="" class="nav-link">{% trans "Lables" %}</a></li>
+            <li class="nav-item"><a href="" class="nav-link">{% trans "Tasks" %}</a></li>
+            {% endif %}
+        </ul>
+        <ul class="navbar-nav ms-auto">
+            {% if signed_in %}
+            <li class="nav-item"><a href="" class="nav-link">{% trans "Log out" %}</a></li>
+            {% endif %} {% if not signed_in %}
+            <li class="nav-item"><a href="" class="nav-link">{% trans "Sign in" %}</a></li>
+            <li class="nav-item"><a href="" class="nav-link">{% trans "Sign up" %}</a></li>
+            {% endif %}
         </div>
-    </nav>
-</header>
+    </div>
+</nav>
