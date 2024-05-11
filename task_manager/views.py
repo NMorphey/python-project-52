@@ -6,4 +6,4 @@ from django.http import HttpResponse
 class IndexView(View):
 
     def get(self, request):
-        return render(request, 'layout.html')
+        return render(request, 'index.html')
