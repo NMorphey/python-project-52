@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+
+{% load i18n %}
+
+{% block content %}
+<h1 class="mb-4">{% trans 'Delete user' %}</h1>
+<p>{% trans 'Are you sure you want to delete' %}{{ user.first_name }} {{ user.last_name }}?</p>
+<form class="form-group input-group-lg input-group-prepend control-label">
+    {% csrf_token %}
+    <input class="btn btn-danger" type="submit" value="{% trans 'Yes, delete!' %}">
+</form>
+{% endblock %}
