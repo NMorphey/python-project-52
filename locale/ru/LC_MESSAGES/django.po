@@ -29,7 +29,7 @@ msgid "English"
 msgstr "Английский"
 
 msgid "Task manager"
-msgstr "Планировщик задач"
+msgstr "Менеджер задач"
 
 msgid "Users"
 msgstr "Пользователи"
@@ -46,8 +46,38 @@ msgstr "Задачи"
 msgid "Log out"
 msgstr "Выйти"
 
-msgid "Sign in"
-msgstr "Войти"
+msgid "Sign In"
+msgstr "Вход"
 
-msgid "Sign up"
+msgid "Sign Up"
 msgstr "Регистрация"
+
+msgid "Registration"
+msgstr "Регистрация"
+
+msgid "Username"
+msgstr "Имя пользователя"
+
+msgid "Full name"
+msgstr "Полное имя"
+
+msgid "Created at"
+msgstr "Дата создания"
+
+msgid "Update"
+msgstr "Изменить"
+
+msgid "Edit user"
+msgstr "Изменение пользователя"
+
+msgid "Edit"
+msgstr "Изменить"
+
+msgid "Delete user"
+msgstr "Удаление пользователя"
+
+msgid "Are you sure you want to delete"
+msgstr "Вы уверены, что хотите удалить"
+
+msgid "Yes, delete"
+msgstr "Да, удалить"
