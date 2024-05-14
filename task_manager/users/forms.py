@@ -21,13 +21,10 @@ class UserForm(UserCreationForm):
             )
             self.fields[field].widget.attrs['placeholder'] = \
                 self.fields[field].label
-        self.fields['password1'].help_text = \
-            _('Your password must contain at least 3 characters.')
-        self.fields['password1'].min_length = 3
 
 
 class LoginForm(UserForm):
 
     class Meta:
         model = User
-        fields = ['username', 'password']
+        fields = ['username', 'password1']
