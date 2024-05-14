@@ -36,7 +36,7 @@ class RegistrationView(View):
         form = UserForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('users_index')
+            return redirect('login')
         return render(
             request,
             'users/registration.html',
