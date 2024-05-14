@@ -10,3 +10,4 @@ coverage.xml
 *.log
 *.pot
 local_settings.py
+db.sqlite3
