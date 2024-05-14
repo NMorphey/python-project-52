@@ -2,19 +2,13 @@
 
 {% load i18n %}
 
+{% load django_bootstrap5 %}
+
 {% block content %}
 <h1 class="mb-4">{% trans 'Registration' %}</h1>
-<form class="form-group input-group-lg input-group-prepend control-label">
+<form class="form-group input-group-lg input-group-prepend control-label" action="{% url 'registration' %}" method="post">
     {% csrf_token %}
-    {% for field in form %}
-        <div class="mb-3">
-            <label class="form-label" for="id_{{ field.name }}">
-                {{ field.label }}
-            </label>
-            {{ field }}
-            <p class="form-text">{{ field.help_text }}</p>
-        </div>
-    {% endfor %}
+    {% bootstrap_form form %}
     <input class="btn btn-primary" type="submit" value="{% trans 'Sign Up' %}">
 </form>
 {% endblock %}

@@ -19,14 +19,14 @@
     {% for user in users %}
     <tr>
         <td>{{ user.id }}</td>
-        <td>{{ user.nickname }}</td>
+        <td>{{ user.username }}</td>
         <td>{{ user.first_name }} {{ user.last_name }}</td>
-        <td>{{ user.created_at }}</td>
+        <td>{{ user.date_joined }}</td>
         <td>
             <div>
-                <a href="">{% trans "Update" %}</a>
+                <a href="{% url 'update_user' user.id %}">{% trans "Update" %}</a>
                 <br>
-                <a href="">{% trans "Delete" %}</a>
+                <a href="{% url 'delete_user' user.id %}">{% trans "Delete" %}</a>
             </div>
         </td>
     </tr>
