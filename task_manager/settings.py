@@ -48,6 +48,7 @@ if RENDER_EXTERNAL_HOSTNAME:
 INSTALLED_APPS = [
     'task_manager',
     'task_manager.users',
+    'task_manager.statuses',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
