@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+
+{% load i18n %}
+
+{% block content %}
+<h1>{% trans "Statuses" %}</h1>
+<a href="{% url 'create_status' %}" class="btn btn-primary my-3">{% trans "Create status" %}</a>
+<table class="table table-striped" data-test="urls">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">{% trans "Name" %}</th>
+      <th scope="col">{% trans "Created at" %}</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  {% if statuses %}
+  <tbody>
+    {% for status in statuses %}
+    <tr>
+        <td>{{ status.id }}</td>
+        <td>{{ status.name }}</td>
+        <td>{{ status.created_at }}</td>
+        <td>
+            <div>
+                <a href="{% url 'update_status' status.id %}">{% trans "Update" %}</a>
+                <br>
+                <a href="{% url 'delete_status' status.id %}">{% trans "Delete" %}</a>
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  {% endif %}
+</table>
+{% endblock %}
