@@ -9,3 +9,6 @@ build:
 
 lint:
 	poetry run flake8 task_manager
+
+test:
+	python3 manage.py test
