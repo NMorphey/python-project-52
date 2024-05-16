@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from task_manager.users.forms import UserForm, LoginForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from task_manager.utils import info_flash, success_flash, error_flash
 
 
 class IndexView(View):
@@ -25,6 +26,7 @@ class LogInView(View):
         )
         if user is not None:
             login(request, user)
+            success_flash(request, 'Logged in successfully')
             return redirect('main_page')
         form = AuthenticationForm(data=request.POST)
         return render(request, 'login.html', {'form': form})
@@ -34,4 +36,5 @@ class LogOutView(View):
 
     def post(self, request, *args, **kwargs):
         logout(request)
+        info_flash(request, 'Logged out')
         return redirect('main_page')

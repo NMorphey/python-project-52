@@ -1,38 +1,5 @@
-from django.test import TestCase, Client
 from django.urls import reverse_lazy
-
-
-class SetUpClient(TestCase):
-
-    def setUp(self):
-        self.client = Client()
-
-
-class SetUpUsers(SetUpClient):
-
-    def setUp(self):
-        super().setUp()
-        self.user_1_data = {
-            'first_name': 'User',
-            'last_name': 'Testov',
-            'username': 'test_user',
-            'password1': 'qwerty',
-            'password2': 'qwerty'
-        }
-        self.user_1_login_data = {
-            'username': self.user_1_data['username'],
-            'password': self.user_1_data['password1']
-        }
-        self.client.post(reverse_lazy('registration'), self.user_1_data)
-
-        user_2_data = {
-            'first_name': 'User',
-            'last_name': 'Another',
-            'username': 'another_user',
-            'password1': 'qwerty',
-            'password2': 'qwerty'
-        }
-        self.client.post(reverse_lazy('registration'), user_2_data)
+from task_manager.utils import SetUpClient, SetUpUsers
 
 
 class GuestUserTestCase(SetUpClient):

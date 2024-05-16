@@ -3,6 +3,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from task_manager.users.forms import UserForm
 from task_manager.users.models import User
+from django.forms.utils import ErrorDict
+from task_manager.utils import (
+    info_flash, success_flash, error_flash, LoginRequiredMixin
+)
 
 
 class UsersIndexView(View):
@@ -36,6 +40,7 @@ class RegistrationView(View):
         form = UserForm(request.POST)
         if form.is_valid():
             form.save()
+            success_flash(request, 'The user created successfully')
             return redirect('login')
         return render(
             request,
@@ -44,13 +49,12 @@ class RegistrationView(View):
         )
 
 
-class UpdateUserView(View):
+class UpdateUserView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect('login')
         id = kwargs['id']
         if request.user.id != id:
+            error_flash(request, 'You are not authorized to modify other users.')
             return redirect('users_index')
         user = get_object_or_404(User, id=id)
         form = UserForm(instance=user)
@@ -58,26 +62,23 @@ class UpdateUserView(View):
                       {'form': form, 'id': id})
 
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect('login')
         id = kwargs['id']
         if request.user.id != id:
+            error_flash(request, 'You are not authorized to modify other users.')
             return redirect('users_index')
 
         form = UserForm(request.POST)
-        username_exists_is_the_only_error = (
-            len(form.errors) == 1
-            and 'A user with that username already exists.' in str(form.errors)
-        )
-        if username_exists_is_the_only_error:
+        if 'A user with that username already exists.' in str(form.errors):
+            form.errors.pop('username')
             form.cleaned_data['username'] = form.data['username']
-        if form.is_valid() or username_exists_is_the_only_error:
+        if form.is_valid():
             user = User.objects.get(id=id)
             user.first_name = form.cleaned_data['first_name']
             user.last_name = form.cleaned_data['last_name']
             user.username = form.cleaned_data['username']
             user.set_password(form.cleaned_data['password1'])
             user.save()
+            success_flash(request, 'User updated successfully')
             return redirect('users_index')
         return render(
             request,
@@ -86,13 +87,12 @@ class UpdateUserView(View):
         )
 
 
-class DeleteUserView(View):
+class DeleteUserView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect('login')
         id = kwargs['id']
         if request.user.id != id:
+            error_flash(request, 'You are not authorized to modify other users.')
             return redirect('users_index')
         user = get_object_or_404(User, id=id)
         form = UserForm(instance=user)
@@ -100,10 +100,9 @@ class DeleteUserView(View):
                       {'form': form, 'id': id})
 
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect('login')
         id = kwargs['id']
         if request.user.id != id:
+            error_flash(request, 'You are not authorized to modify other users.')
             return redirect('users_index')
         User.objects.get(id=id).delete()
         return redirect('users_index')
