@@ -81,3 +81,30 @@ msgstr "Вы уверены, что хотите удалить"
 
 msgid "Yes, delete"
 msgstr "Да, удалить"
+
+msgid "Name"
+msgstr "Имя"
+
+msgid "Create status"
+msgstr "Создать статус"
+
+msgid "The user created successfully"
+msgstr "Пользователь успешно зарегистрирован"
+
+msgid "Logged in successfully"
+msgstr "Вы залогинены"
+
+msgid "Logged out"
+msgstr "Вы разлогинены"
+
+msgid "This can be done only by an authenticated user!"
+msgstr "Вы не авторизованы! Пожалуйста, выполните вход."
+
+msgid "You are not authorized to modify other users."
+msgstr "У вас нет прав для изменения другого пользователя."
+
+msgid "User updated successfully"
+msgstr "Пользователь успешно изменен"
+
+msgid "User deleted successfully"
+msgstr "Пользователь успешно удален"
