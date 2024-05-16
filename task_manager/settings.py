@@ -231,3 +231,5 @@ BOOTSTRAP5 = {
         'default': 'django_bootstrap5.renderers.FieldRenderer',
     },
 }
+
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
