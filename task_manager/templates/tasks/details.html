@@ -32,7 +32,7 @@
         <h6>{% trans "Labels" %}:</h6>
         {% if task.labels %}
         <ul>
-            {% for label in task.labels %}
+            {% for label in task.labels.all %}
             <li>{{ label }}</li>
             {% endfor %}
         </ul>
