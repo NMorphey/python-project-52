@@ -26,7 +26,7 @@ class LabelDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
             return super().dispatch(request, *args, **kwargs)
         except ProtectedError:
             error_flash(request, 'Assigned label cannot be deleted')
-            return redirect('labels_view')
+            return redirect('labels_index')
 
 
 class LabelCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
