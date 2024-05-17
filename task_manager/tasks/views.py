@@ -42,7 +42,6 @@ class TaskCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     success_message = 'Task created successfully'
 
     def form_valid(self, form):
-        print(type(self.request.user))
         form.instance.author_id = self.request.user.id
         return super().form_valid(form)
 
