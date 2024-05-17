@@ -91,11 +91,8 @@ class DeleteUserView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         if kwargs['pk'] != request.user.id:
             error_flash(request, 'You are not authorized to modify other users.')
             return redirect('users_index')
-        return super().dispatch(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
         try:
-            return super().delete(request, *args, **kwargs)
+            return super().dispatch(request, *args, **kwargs)
         except ProtectedError:
             error_flash(request, 'Assigned user cannot be deleted')
             return redirect('users_index')
