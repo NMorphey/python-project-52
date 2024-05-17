@@ -74,3 +74,11 @@ class SetUpSignedInClient(SetUpUsers):
     def setUp(self):
         super().setUp()
         self.client.post(reverse_lazy('login'), self.user_1_login_data)
+
+
+class SetUpStatus(SetUpSignedInClient):
+
+    def setUp(self):
+        super().setUp()
+        self.status_name = 'test_status'
+        self.client.post(reverse_lazy('create_status'), {'name': self.status_name})

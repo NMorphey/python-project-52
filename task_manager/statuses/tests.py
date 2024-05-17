@@ -1,13 +1,5 @@
 from django.urls import reverse_lazy
-from task_manager.utils import SetUpUsers, SetUpSignedInClient
-
-
-class SetUpStatus(SetUpSignedInClient):
-
-    def setUp(self):
-        super().setUp()
-        self.status_name = 'test_status'
-        self.client.post(reverse_lazy('create_status'), {'name': self.status_name})
+from task_manager.utils import SetUpUsers, SetUpStatus
 
 
 class UnavailableForGuestsTestCase(SetUpUsers):
