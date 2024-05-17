@@ -7,24 +7,17 @@ from django.forms.utils import ErrorDict
 from task_manager.utils import (
     info_flash, success_flash, error_flash, LoginRequiredMixin
 )
+from django.views.generic import ListView, DeleteView
+from django.urls import reverse_lazy
+from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models.deletion import ProtectedError
 
 
-class UsersIndexView(View):
 
-    def get(self, request, *args, **kwargs):
-        return render(
-            request,
-            'users/index.html',
-            {
-                'users': User.objects.all().values(
-                    'id',
-                    'username',
-                    'first_name',
-                    'last_name',
-                    'date_joined'
-                )
-            }
-        )
+class UsersIndexView(ListView):
+    model = User
+    context_object_name = 'users'
+    template_name = 'users/index.html'
 
 
 class RegistrationView(View):
@@ -52,7 +45,7 @@ class RegistrationView(View):
 class UpdateUserView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
-        id = kwargs['id']
+        id = kwargs['pk']
         if request.user.id != id:
             error_flash(request, 'You are not authorized to modify other users.')
             return redirect('users_index')
@@ -62,7 +55,7 @@ class UpdateUserView(LoginRequiredMixin, View):
                       {'form': form, 'id': id})
 
     def post(self, request, *args, **kwargs):
-        id = kwargs['id']
+        id = kwargs['pk']
         if request.user.id != id:
             error_flash(request, 'You are not authorized to modify other users.')
             return redirect('users_index')
@@ -87,22 +80,22 @@ class UpdateUserView(LoginRequiredMixin, View):
         )
 
 
-class DeleteUserView(LoginRequiredMixin, View):
+class DeleteUserView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    model = User
+    template_name = 'users/delete.html'
+    context_object_name = 'user'
+    success_url = reverse_lazy('users_index')
+    success_message = 'User deleted successfully'
 
-    def get(self, request, *args, **kwargs):
-        id = kwargs['id']
-        if request.user.id != id:
+    def dispatch(self, request, *args, **kwargs):
+        if kwargs['pk'] != request.user.id:
             error_flash(request, 'You are not authorized to modify other users.')
             return redirect('users_index')
-        user = get_object_or_404(User, id=id)
-        form = UserForm(instance=user)
-        return render(request, 'users/delete_user.html',
-                      {'form': form, 'id': id})
+        return super().dispatch(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        id = kwargs['id']
-        if request.user.id != id:
-            error_flash(request, 'You are not authorized to modify other users.')
+    def delete(self, request, *args, **kwargs):
+        try:
+            return super().delete(request, *args, **kwargs)
+        except ProtectedError:
+            error_flash(request, 'Assigned user cannot be deleted')
             return redirect('users_index')
-        User.objects.get(id=id).delete()
-        return redirect('users_index')
