@@ -1,10 +1,20 @@
 {% extends 'layout.html' %}
 
+{% load django_bootstrap5 %}
+
 {% load i18n %}
 
 {% block content %}
 <h1>{% trans "Tasks" %}</h1>
 <a href="{% url 'create_task' %}" class="btn btn-primary my-3">{% trans "Create task" %}</a>
+<div class="card">
+  <div class="card-body bg-light">
+    <form method="get">
+      {% bootstrap_form filter.form %}
+      <button class="btn btn-primary" type="submit">{% trans "Show" %}</button>
+    </form> 
+  </div>
+</div>
 <table class="table table-striped" data-test="urls">
   <thead>
     <tr>

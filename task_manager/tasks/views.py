@@ -7,12 +7,23 @@ from django.urls import reverse_lazy
 from task_manager.tasks.models import Task
 from task_manager.utils import LoginRequiredMixin, error_flash
 from django.contrib.messages.views import SuccessMessageMixin
+from task_manager.tasks.filters import TaskFilter
 
 
 class TasksIndexView(LoginRequiredMixin, ListView):
     model = Task
     template_name = 'tasks/index.html'
     context_object_name = 'tasks'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        filter = TaskFilter(self.request.GET, queryset=queryset, request=self.request)
+        return filter.qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = TaskFilter(self.request.GET, queryset=self.get_queryset(), request=self.request)
+        return context
 
 
 class TaskDetailView(LoginRequiredMixin, DetailView):
