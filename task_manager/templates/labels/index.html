@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+
+{% load i18n %}
+
+{% block content %}
+<h1>{% trans "Labels" %}</h1>
+<a href="{% url 'create_label' %}" class="btn btn-primary my-3">{% trans "Create label" %}</a>
+<table class="table table-striped" data-test="urls">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">{% trans "Name" %}</th>
+      <th scope="col">{% trans "Created at" %}</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  {% if labels %}
+  <tbody>
+    {% for label in labels %}
+    <tr>
+        <td>{{ label.id }}</td>
+        <td>{{ label.name }}</td>
+        <td>{{ label.created_at }}</td>
+        <td>
+            <div>
+                <a href="{% url 'update_label' label.id %}">{% trans "Update" %}</a>
+                <br>
+                <a href="{% url 'delete_label' label.id %}">{% trans "Delete" %}</a>
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  {% endif %}
+</table>
+{% endblock %}
