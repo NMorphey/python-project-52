@@ -25,7 +25,7 @@ class RegistrationView(View):
     def get(self, request, *args, **kwargs):
         return render(
             request,
-            'users/registration.html',
+            'users/create.html',
             {'form': UserForm()}
         )
 
@@ -37,7 +37,7 @@ class RegistrationView(View):
             return redirect('login')
         return render(
             request,
-            'users/registration.html',
+            'users/create.html',
             {'form': form}
         )
 
@@ -51,7 +51,7 @@ class UpdateUserView(LoginRequiredMixin, View):
             return redirect('users_index')
         user = get_object_or_404(User, id=id)
         form = UserForm(instance=user)
-        return render(request, 'users/update_user.html',
+        return render(request, 'users/update.html',
                       {'form': form, 'id': id})
 
     def post(self, request, *args, **kwargs):
@@ -75,7 +75,7 @@ class UpdateUserView(LoginRequiredMixin, View):
             return redirect('users_index')
         return render(
             request,
-            'users/update_user.html',
+            'users/update.html',
             {'form': form, 'id': id}
         )
 
