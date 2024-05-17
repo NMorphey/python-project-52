@@ -108,3 +108,69 @@ msgstr "Пользователь успешно изменен"
 
 msgid "User deleted successfully"
 msgstr "Пользователь успешно удален"
+
+msgid "Create task"
+msgstr "Создать задачу"
+
+msgid "Delete task"
+msgstr "Удалить задачу"
+
+msgid "Edit task"
+msgstr "Изменение задачи"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Author"
+msgstr "Автор"
+
+msgid "Executor"
+msgstr "Исполнитель"
+
+msgid "Task view"
+msgstr "Просмотр задачи"
+
+msgid "Labels"
+msgstr "Метки"
+
+msgid "Not assigned"
+msgstr "Не назначены"
+
+msgid "A task can only be deleted by its author"
+msgstr "Задачу может удалить только ее автор"
+
+msgid "The status was updated"
+msgstr "Статус успешно изменен"
+
+msgid "The status was deleted"
+msgstr "Статус успешно удален"
+
+msgid "Status created successfully"
+msgstr "Статус успешно создан"
+
+msgid "The task was updated"
+msgstr "Задача успешно изменена"
+
+msgid "The task was deleted"
+msgstr "Задача успешно удалена"
+
+msgid "Task created successfully"
+msgstr "Задача успешно создана"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
