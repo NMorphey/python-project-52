@@ -37,7 +37,7 @@ msgstr "Пользователи"
 msgid "Statuses"
 msgstr "Статусы"
 
-msgid "Lables"
+msgid "Labels"
 msgstr "Метки"
 
 msgid "Tasks"
@@ -130,9 +130,6 @@ msgstr "Исполнитель"
 msgid "Task view"
 msgstr "Просмотр задачи"
 
-msgid "Labels"
-msgstr "Метки"
-
 msgid "Not assigned"
 msgstr "Не назначены"
 
@@ -162,3 +159,21 @@ msgstr "Невозможно удалить пользователя, потом
 
 msgid "Assigned status cannot be deleted"
 msgstr "Невозможно удалить статус, потому что он используется"
+
+msgid "Create label"
+msgstr "Создать метку"
+
+msgid "Assigned label cannot be deleted"
+msgstr "Невозможно удалить метку, потому что она используется"
+
+msgid "Label"
+msgstr "Метка"
+
+msgid "The label was deleted"
+msgstr "Метка успешно удалена"
+
+msgid "Label created successfully"
+msgstr "Метка успешно создана"
+
+msgid "Label updated successfully"
+msgstr "Метка успешно изменена"
