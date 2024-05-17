@@ -5,6 +5,8 @@ from django.urls import reverse_lazy
 from task_manager.statuses.models import Status
 from task_manager.utils import LoginRequiredMixin
 from django.utils.translation import gettext_lazy as _
+from task_manager.utils import error_flash
+from django.db.models.deletion import ProtectedError
 
 
 class StatusesIndexView(LoginRequiredMixin, ListView):
@@ -18,6 +20,13 @@ class StatusDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     template_name = 'statuses/delete.html'
     success_url = reverse_lazy('statuses_index')
     success_message = _('The status was deleted')
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            return super().dispatch(request, *args, **kwargs)
+        except ProtectedError:
+            error_flash(request, 'Assigned status cannot be deleted')
+            return redirect('statuses_index')
 
 
 class StatusCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):

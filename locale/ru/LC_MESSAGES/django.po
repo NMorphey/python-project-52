@@ -159,3 +159,6 @@ msgstr "Задача успешно создана"
 
 msgid "Assigned user cannot be deleted"
 msgstr "Невозможно удалить пользователя, потому что он используется"
+
+msgid "Assigned status cannot be deleted"
+msgstr "Невозможно удалить статус, потому что он используется"
