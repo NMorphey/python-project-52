@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+
+{% load i18n %}
+
+{% block content %}
+<h1>{% trans "Task view" %}</h1>
+<div class="card">
+    <div class="card-header">
+        <h2>{{ task.name }}</h2>
+    </div>
+    <div class="card-body">
+        <p>{{ task.description }}</p>
+        <hr>
+        <table class="table table-borderless">
+            <tr>
+                <th>{% trans "Author" %}</th>
+                <td>{{ task.author }}</td>
+            </tr>
+            <tr>
+                <th>{% trans "Executor" %}</th>
+                <td>{{ task.executor }}</td>
+            </tr>
+            <tr>
+                <th>{% trans "Status" %}</th>
+                <td>{{ task.status }}</td>
+            </tr>
+            <tr>
+                <th>{% trans "Creaetd at" %}</th>
+                <td>{{ task.created_at }}</td>
+            </tr>
+        </table>
+        <h6>{% trans "Labels" %}:</h6>
+        {% if task.labels %}
+        <ul>
+            {% for label in task.labels %}
+            <li>{{ label }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>{% trans "Not assigned" %}</p>
+        {% endif %}
+        <a href="{% url 'update_task' task.id %}">{% trans "Update" %}</a>
+        <br>
+        <a href="{% url 'delete_task' task.id %}">{% trans "Delete" %}</a>
+    </div>
+</div>
+{% endblock %}
