@@ -157,20 +157,5 @@ msgstr "Задача успешно удалена"
 msgid "Task created successfully"
 msgstr "Задача успешно создана"
 
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
-
-msgid ""
-msgstr ""
+msgid "Assigned user cannot be deleted"
+msgstr "Невозможно удалить пользователя, потому что он используется"
