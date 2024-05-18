@@ -61,7 +61,8 @@ class UpdateUserView(LoginRequiredMixin, View):
             return redirect('users_index')
 
         form = UserForm(request.POST)
-        if str(_('A user with that username already exists.')) in str(form.errors):
+        if str(_('A user with that username already exists.')) \
+                in str(form.errors):
             form.errors.pop('username')
             form.cleaned_data['username'] = form.data['username']
         if form.is_valid():
