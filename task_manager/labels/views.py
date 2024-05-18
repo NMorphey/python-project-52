@@ -42,4 +42,4 @@ class LabelUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     template_name = 'labels/update.html'
     fields = ['name']
     success_url = reverse_lazy('labels_index')
-    success_message = _('The label was updated')
+    success_message = _('Label updated successfully')
