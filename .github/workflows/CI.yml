@@ -26,5 +26,5 @@ jobs:
           poetry run pytest --cov=task_manager --cov-report=xml
           ./cc-test-reporter after-build --exit-code $?
         env:
-          CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
           CI: true
