@@ -14,7 +14,7 @@
         {% if request.user.is_authenticated %}
         <form class="navbar-nav" action="{% url 'logout' %}" method="post">
             {% csrf_token %}
-            <input type="submit" class="nav-link btn border-0" value="{% trans 'Log Out' %}">
+            <input type="submit" class="nav-link btn border-0" value="{% trans 'Log out' %}">
         </form>
         {% else %}
         <ul class="navbar-nav">
