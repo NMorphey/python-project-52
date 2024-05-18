@@ -57,3 +57,82 @@ class CRUDTestCase(SetUpTask):
         response = self.client.get(reverse_lazy('tasks_index'))
         self.assertNotContains(response, self.task_name)
         self.assertContains(response, 'renamed_task')
+
+
+class QueryTestCase(SetUpUsers):
+
+    def setUp(self):
+        super().setUp()
+        # Login as user 1
+        self.client.post(reverse_lazy('login'), self.user_1_login_data)
+        # Setup statuses
+        self.client.post(reverse_lazy('create_status'), {'name': 'status1'})
+        self.client.post(reverse_lazy('create_status'), {'name': 'status2'})
+        # Setup labels
+        self.client.post(reverse_lazy('create_label'), {'name': 'label1'})
+        self.client.post(reverse_lazy('create_label'), {'name': 'label2'})
+        self.client.post(reverse_lazy('create_label'), {'name': 'label3'})
+        # Create tasks as user 1
+        self.client.post(reverse_lazy('create_task'), {
+            'name': 'task1',
+            'status': 1,
+            'executor': 2,
+            'labels': [1, 2]
+        })
+        self.client.post(reverse_lazy('create_task'), {
+            'name': 'task2',
+            'status': 2,
+            'executor': 1,
+            'labels': [1]
+        })
+        # Login as user 2
+        self.client.post(reverse_lazy('logout'))
+        self.client.post(reverse_lazy('login'), self.user_2_login_data)
+        # Create task as user 2
+        self.client.post(reverse_lazy('create_task'), {
+            'name': 'task3',
+            'status': 1,
+            'executor': 1,
+            'labels': [1, 2]
+        })
+        # Client stays logged in as user 2
+
+    def test_status_search(self):
+        response = self.client.get(reverse_lazy('tasks_index'), {'status': 1})
+        self.assertContains(response, 'task1')
+        self.assertNotContains(response, 'task2')
+        self.assertContains(response, 'task3')
+    
+    def test_executor_search(self):
+        response = self.client.get(reverse_lazy('tasks_index'), {'executor': 1})
+        self.assertNotContains(response, 'task1')
+        self.assertContains(response, 'task2')
+        self.assertContains(response, 'task3')
+
+    def test_self_search(self):
+        response = self.client.get(reverse_lazy('tasks_index'), {'self_tasks': 'on'})
+        self.assertNotContains(response, 'task1')
+        self.assertNotContains(response, 'task2')
+        self.assertContains(response, 'task3')
+
+    def test_lables_search(self):
+        response = self.client.get(reverse_lazy('tasks_index'), {'label': 1})
+        self.assertContains(response, 'task1')
+        self.assertContains(response, 'task2')
+        self.assertContains(response, 'task3')
+
+        response = self.client.get(reverse_lazy('tasks_index'), {'label': 2})
+        self.assertContains(response, 'task1')
+        self.assertNotContains(response, 'task2')
+        self.assertContains(response, 'task3')
+
+        response = self.client.get(reverse_lazy('tasks_index'), {'label': 3})
+        self.assertNotContains(response, 'task1')
+        self.assertNotContains(response, 'task2')
+        self.assertNotContains(response, 'task3')
+
+    def test_multiple_searches(self):
+        response = self.client.get(reverse_lazy('tasks_index'), {'label': 1, 'self_tasks': 'on', 'executor': 1, 'status': 1})
+        self.assertNotContains(response, 'task1')
+        self.assertNotContains(response, 'task2')
+        self.assertContains(response, 'task3')
