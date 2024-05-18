@@ -19,6 +19,7 @@ uvicorn = "^0.29.0"
 python-dotenv = "^1.0.1"
 django-bootstrap5 = "^24.2"
 django-filter = "^24.2"
+rollbar = "^1.0.0"
 
 
 [build-system]
