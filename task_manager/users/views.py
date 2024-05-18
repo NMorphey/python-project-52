@@ -7,6 +7,7 @@ from django.views.generic import ListView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models.deletion import ProtectedError
+from django.utils.translation import gettext_lazy as _
 
 
 class UsersIndexView(ListView):
@@ -60,7 +61,7 @@ class UpdateUserView(LoginRequiredMixin, View):
             return redirect('users_index')
 
         form = UserForm(request.POST)
-        if 'A user with that username already exists.' in str(form.errors):
+        if str(_('A user with that username already exists.')) in str(form.errors):
             form.errors.pop('username')
             form.cleaned_data['username'] = form.data['username']
         if form.is_valid():
