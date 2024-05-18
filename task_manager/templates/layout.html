@@ -5,8 +5,8 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 
-
-{% language 'ru' %}
+{% get_current_language as LANGUAGE_CODE %}
+{% language LANGUAGE_CODE %}
 
 <body class="min-vh-100 d-flex flex-column">
 
