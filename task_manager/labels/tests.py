@@ -14,7 +14,7 @@ class UnavailableForGuestsTestCase(SetUpUsers):
 
     def test_redirects(self):
         response = self.client.get(reverse_lazy('labels_index'))
-        self.assertEqual(response.label_code, 302)
+        self.assertEqual(response.status_code, 302)
 
 
 class CRUDTestCase(SetUpLabel):
