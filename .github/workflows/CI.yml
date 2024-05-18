@@ -1,0 +1,22 @@
+name: CI
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: install poerty
+        uses: snok/install-poetry@v1
+
+      - name: install dependencies
+        run: poetry install
+      
+      - name: linter
+        run: make lint
+      
+      - name: tests
+        run: make test
