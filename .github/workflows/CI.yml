@@ -18,5 +18,13 @@ jobs:
       - name: linter
         run: make lint
       
-      - name: tests
-        run: make test
+      - name: Run tests and generate coverage report
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter before-build
+          poetry run pytest --cov=your_project --cov-report=xml
+          ./cc-test-reporter after-build --exit-code $?
+        env:
+          CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
+          CI: true
