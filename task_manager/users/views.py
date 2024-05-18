@@ -86,7 +86,7 @@ class DeleteUserView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     template_name = 'users/delete.html'
     context_object_name = 'user'
     success_url = reverse_lazy('users_index')
-    success_message = 'User deleted successfully'
+    success_message = _('User deleted successfully')
 
     def dispatch(self, request, *args, **kwargs):
         if kwargs['pk'] != request.user.id:

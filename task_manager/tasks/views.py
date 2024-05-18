@@ -7,6 +7,7 @@ from task_manager.tasks.models import Task
 from task_manager.utils import LoginRequiredMixin, error_flash
 from django.contrib.messages.views import SuccessMessageMixin
 from task_manager.tasks.filters import TaskFilter
+from django.utils.translation import gettext_lazy as _
 
 
 class TasksIndexView(LoginRequiredMixin, ListView):
@@ -41,7 +42,7 @@ class TaskDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Task
     template_name = 'tasks/delete.html'
     success_url = reverse_lazy('tasks_index')
-    success_message = 'The task was deleted'
+    success_message = _('The task was deleted')
 
     def dispatch(self, request, *args, **kwargs):
         if Task.objects.get(id=kwargs['pk']).author.id != request.user.id:
@@ -55,7 +56,7 @@ class TaskCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = 'tasks/create.html'
     fields = ['name', 'description', 'status', 'executor', 'labels']
     success_url = reverse_lazy('tasks_index')
-    success_message = 'Task created successfully'
+    success_message = _('Task created successfully')
 
     def form_valid(self, form):
         form.instance.author_id = self.request.user.id
@@ -67,4 +68,4 @@ class TaskUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     template_name = 'tasks/update.html'
     fields = ['name', 'description', 'status', 'executor', 'labels']
     success_url = reverse_lazy('tasks_index')
-    success_message = 'The task was updated'
+    success_message = _('The task was updated')
