@@ -194,3 +194,6 @@ msgstr "Только свои задачи"
 
 msgid "Description"
 msgstr "Описание"
+
+msgid "Create"
+msgstr "Создать"
