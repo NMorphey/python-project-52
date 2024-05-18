@@ -177,3 +177,9 @@ msgstr "Метка успешно создана"
 
 msgid "Label updated successfully"
 msgstr "Метка успешно изменена"
+
+msgid "Show"
+msgstr "Показать"
+
+msgid "My own tasks only"
+msgstr "Только свои задачи"
