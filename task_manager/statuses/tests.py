@@ -23,7 +23,8 @@ class CRUDTestCase(SetUpStatus):
         response = self.client.get(reverse_lazy('statuses_index'))
         self.assertNotContains(response, 'created_status')
 
-        self.client.post(reverse_lazy('create_status'), {'name': 'created_status'})
+        self.client.post(reverse_lazy('create_status'),
+                         {'name': 'created_status'})
 
         response = self.client.get(reverse_lazy('statuses_index'))
         self.assertContains(response, 'created_status')
@@ -41,7 +42,8 @@ class CRUDTestCase(SetUpStatus):
         response = self.client.get(reverse_lazy('statuses_index'))
         self.assertNotContains(response, 'renamed_status')
 
-        self.client.post(reverse_lazy('update_status', kwargs={'pk': 1}), {'name': 'renamed_status'})
+        self.client.post(reverse_lazy('update_status', kwargs={'pk': 1}),
+                         {'name': 'renamed_status'})
 
         response = self.client.get(reverse_lazy('statuses_index'))
         self.assertNotContains(response, self.status_name)

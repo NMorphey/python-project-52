@@ -102,15 +102,17 @@ class QueryTestCase(SetUpUsers):
         self.assertContains(response, 'task1')
         self.assertNotContains(response, 'task2')
         self.assertContains(response, 'task3')
-    
+
     def test_executor_search(self):
-        response = self.client.get(reverse_lazy('tasks_index'), {'executor': 1})
+        response = self.client.get(reverse_lazy('tasks_index'),
+                                   {'executor': 1})
         self.assertNotContains(response, 'task1')
         self.assertContains(response, 'task2')
         self.assertContains(response, 'task3')
 
     def test_self_search(self):
-        response = self.client.get(reverse_lazy('tasks_index'), {'self_tasks': 'on'})
+        response = self.client.get(reverse_lazy('tasks_index'),
+                                   {'self_tasks': 'on'})
         self.assertNotContains(response, 'task1')
         self.assertNotContains(response, 'task2')
         self.assertContains(response, 'task3')
@@ -132,7 +134,10 @@ class QueryTestCase(SetUpUsers):
         self.assertNotContains(response, 'task3')
 
     def test_multiple_searches(self):
-        response = self.client.get(reverse_lazy('tasks_index'), {'label': 1, 'self_tasks': 'on', 'executor': 1, 'status': 1})
+        response = self.client.get(
+            reverse_lazy('tasks_index'),
+            {'label': 1, 'self_tasks': 'on', 'executor': 1, 'status': 1}
+        )
         self.assertNotContains(response, 'task1')
         self.assertNotContains(response, 'task2')
         self.assertContains(response, 'task3')

@@ -1,17 +1,12 @@
 from django.views import View
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
 from task_manager.users.forms import UserForm
 from task_manager.users.models import User
-from django.forms.utils import ErrorDict
-from task_manager.utils import (
-    info_flash, success_flash, error_flash, LoginRequiredMixin
-)
+from task_manager.utils import success_flash, error_flash, LoginRequiredMixin
 from django.views.generic import ListView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models.deletion import ProtectedError
-
 
 
 class UsersIndexView(ListView):
@@ -47,7 +42,9 @@ class UpdateUserView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         id = kwargs['pk']
         if request.user.id != id:
-            error_flash(request, 'You are not authorized to modify other users.')
+            error_flash(
+                request, 'You are not authorized to modify other users.'
+            )
             return redirect('users_index')
         user = get_object_or_404(User, id=id)
         form = UserForm(instance=user)
@@ -57,7 +54,9 @@ class UpdateUserView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         id = kwargs['pk']
         if request.user.id != id:
-            error_flash(request, 'You are not authorized to modify other users.')
+            error_flash(
+                request, 'You are not authorized to modify other users.'
+            )
             return redirect('users_index')
 
         form = UserForm(request.POST)
@@ -89,7 +88,9 @@ class DeleteUserView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 
     def dispatch(self, request, *args, **kwargs):
         if kwargs['pk'] != request.user.id:
-            error_flash(request, 'You are not authorized to modify other users.')
+            error_flash(
+                request, 'You are not authorized to modify other users.'
+            )
             return redirect('users_index')
         try:
             return super().dispatch(request, *args, **kwargs)

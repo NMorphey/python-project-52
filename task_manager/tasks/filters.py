@@ -8,10 +8,20 @@ from django.forms import CheckboxInput
 
 
 class TaskFilter(django_filters.FilterSet):
-    status = django_filters.ModelChoiceFilter(queryset=Status.objects.all(), label=_('Status'))
-    executor = django_filters.ModelChoiceFilter(queryset=User.objects.all(), label=_('Executor'))
-    label = django_filters.ModelChoiceFilter(queryset=Label.objects.all(), field_name='labels', label=_('Label'))
-    self_tasks = django_filters.BooleanFilter(widget=CheckboxInput, method='filter_self_tasks', label=_('My own tasks only'))
+    status = django_filters.ModelChoiceFilter(
+        queryset=Status.objects.all(), label=_('Status')
+    )
+    executor = django_filters.ModelChoiceFilter(
+        queryset=User.objects.all(), label=_('Executor')
+    )
+    label = django_filters.ModelChoiceFilter(
+        queryset=Label.objects.all(), field_name='labels', label=_('Label')
+    )
+    self_tasks = django_filters.BooleanFilter(
+        widget=CheckboxInput,
+        method='filter_self_tasks',
+        label=_('My own tasks only')
+    )
 
     def filter_self_tasks(self, queryset, name, value):
         if value:

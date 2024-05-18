@@ -1,8 +1,6 @@
 from typing import Any
-from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from task_manager.users.models import User
-from django.utils.translation import gettext_lazy as _
 
 
 class UserForm(UserCreationForm):

@@ -23,7 +23,8 @@ class CRUDTestCase(SetUpLabel):
         response = self.client.get(reverse_lazy('labels_index'))
         self.assertNotContains(response, 'created_label')
 
-        self.client.post(reverse_lazy('create_label'), {'name': 'created_label'})
+        self.client.post(reverse_lazy('create_label'),
+                         {'name': 'created_label'})
 
         response = self.client.get(reverse_lazy('labels_index'))
         self.assertContains(response, 'created_label')
@@ -41,7 +42,8 @@ class CRUDTestCase(SetUpLabel):
         response = self.client.get(reverse_lazy('labels_index'))
         self.assertNotContains(response, 'renamed_label')
 
-        self.client.post(reverse_lazy('update_label', kwargs={'pk': 1}), {'name': 'renamed_label'})
+        self.client.post(reverse_lazy('update_label', kwargs={'pk': 1}),
+                         {'name': 'renamed_label'})
 
         response = self.client.get(reverse_lazy('labels_index'))
         self.assertNotContains(response, self.label_name)

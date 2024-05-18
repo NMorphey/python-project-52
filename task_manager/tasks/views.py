@@ -1,8 +1,7 @@
-from django.forms import BaseForm
-from django.http import HttpRequest
-from django.http.response import HttpResponse
-from django.shortcuts import render, redirect
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.shortcuts import redirect
+from django.views.generic import (
+    ListView, CreateView, UpdateView, DeleteView, DetailView
+)
 from django.urls import reverse_lazy
 from task_manager.tasks.models import Task
 from task_manager.utils import LoginRequiredMixin, error_flash
@@ -17,12 +16,18 @@ class TasksIndexView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        filter = TaskFilter(self.request.GET, queryset=queryset, request=self.request)
+        filter = TaskFilter(
+            self.request.GET, queryset=queryset, request=self.request
+        )
         return filter.qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['filter'] = TaskFilter(self.request.GET, queryset=self.get_queryset(), request=self.request)
+        context['filter'] = TaskFilter(
+            self.request.GET,
+            queryset=self.get_queryset(),
+            request=self.request
+        )
         return context
 
 

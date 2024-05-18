@@ -1,10 +1,8 @@
 from django.views import View
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from task_manager.users.forms import UserForm, LoginForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from task_manager.utils import info_flash, success_flash, error_flash
+from task_manager.utils import info_flash, success_flash
 
 
 class IndexView(View):
