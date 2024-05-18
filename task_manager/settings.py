@@ -16,6 +16,7 @@ from dotenv import load_dotenv
 
 import dj_database_url
 from django.utils.translation import gettext_lazy as _
+import rollbar
 
 
 load_dotenv()
@@ -29,8 +30,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'RENDER' not in os.environ
+
+ROLLBAR = {
+    'access_token': os.environ.get('ACCESS_TOKEN'),
+    'environment': 'development' if DEBUG else 'production',
+    'branch': 'master',
+    'root': BASE_DIR,
+}
+
+rollbar.init(
+    ROLLBAR['access_token'],
+    ROLLBAR['environment'],
+    root=ROLLBAR['root'],
+    branch=ROLLBAR['branch'],
+)
 
 # https://docs.djangoproject.com/en/3.0/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
@@ -69,7 +83,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.locale.LocaleMiddleware'
+    'django.middleware.locale.LocaleMiddleware',
+    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware'
 ]
 
 ROOT_URLCONF = 'task_manager.urls'
