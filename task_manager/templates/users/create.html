@@ -9,6 +9,6 @@
 <form class="form-group input-group-lg input-group-prepend control-label" action="{% url 'registration' %}" method="post">
     {% csrf_token %}
     {% bootstrap_form form %}
-    <input class="btn btn-primary" type="submit" value="{% trans 'Sign Up' %}">
+    <input class="btn btn-primary" type="submit" value="{% trans 'Sign Up' context 'form button' %}">
 </form>
 {% endblock %}

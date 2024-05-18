@@ -56,6 +56,10 @@ msgstr "Войти"
 msgid "Sign Up"
 msgstr "Регистрация"
 
+msgctxt "form button"
+msgid "Sign Up"
+msgstr "Зарегистрировать"
+
 msgid "Registration"
 msgstr "Регистрация"
 
