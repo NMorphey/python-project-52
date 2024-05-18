@@ -44,7 +44,7 @@ msgid "Tasks"
 msgstr "Задачи"
 
 msgid "Log out"
-msgstr "Выйти"
+msgstr "Выход"
 
 msgid "Sign In"
 msgstr "Вход"
