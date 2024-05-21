@@ -1,6 +1,6 @@
 import django_filters
 from task_manager.tasks.models import Task
-from task_manager.users.models import User
+from django.contrib.auth.models import User
 from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
 from django.utils.translation import gettext_lazy as _

@@ -249,3 +249,5 @@ BOOTSTRAP5 = {
 }
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
+
+AUTH_USER_MODEL = 'auth.User'

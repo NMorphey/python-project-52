@@ -1,7 +1,7 @@
 from django.views import View
 from django.shortcuts import render, redirect, get_object_or_404
 from task_manager.users.forms import UserForm
-from task_manager.users.models import User
+from django.contrib.auth.models import User
 from task_manager.utils import success_flash, error_flash, LoginRequiredMixin
 from django.views.generic import ListView, DeleteView
 from django.urls import reverse_lazy

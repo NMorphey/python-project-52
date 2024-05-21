@@ -1,6 +1,6 @@
 from typing import Any
 from django.contrib.auth.forms import UserCreationForm
-from task_manager.users.models import User
+from django.contrib.auth.models import User
 
 
 class UserForm(UserCreationForm):
