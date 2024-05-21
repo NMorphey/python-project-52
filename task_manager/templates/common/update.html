@@ -5,7 +5,7 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-<h1 class="mb-4">{% trans 'Edit task' %}</h1>
+<h1 class="mb-4">{{ header }}</h1>
 <form class="form-group input-group-lg input-group-prepend control-label" method="post">
     {% csrf_token %}
     {% bootstrap_form form %}

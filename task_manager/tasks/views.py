@@ -1,7 +1,6 @@
 from django.shortcuts import redirect
-from django.views.generic import (
-    ListView, CreateView, UpdateView, DeleteView, DetailView
-)
+from django.views.generic import DetailView
+from task_manager.utils import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from task_manager.tasks.models import Task
 from task_manager.utils import LoginRequiredMixin, error_flash
@@ -10,10 +9,9 @@ from task_manager.tasks.filters import TaskFilter
 from django.utils.translation import gettext_lazy as _
 
 
-class TasksIndexView(LoginRequiredMixin, ListView):
+class TasksIndexView(ListView):
     model = Task
-    template_name = 'tasks/index.html'
-    context_object_name = 'tasks'
+    fields = ['id', 'name', 'status', 'author', 'executor', 'created_at']
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -38,11 +36,8 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'task'
 
 
-class TaskDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+class TaskDeleteView(DeleteView):
     model = Task
-    template_name = 'tasks/delete.html'
-    success_url = reverse_lazy('tasks_index')
-    success_message = _('The task was deleted')
 
     def dispatch(self, request, *args, **kwargs):
         if Task.objects.get(id=kwargs['pk']).author.id != request.user.id:
@@ -51,21 +46,15 @@ class TaskDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class TaskCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+class TaskCreateView(CreateView):
     model = Task
-    template_name = 'tasks/create.html'
     fields = ['name', 'description', 'status', 'executor', 'labels']
-    success_url = reverse_lazy('tasks_index')
-    success_message = _('Task created successfully')
 
     def form_valid(self, form):
         form.instance.author_id = self.request.user.id
         return super().form_valid(form)
 
 
-class TaskUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+class TaskUpdateView(UpdateView):
     model = Task
-    template_name = 'tasks/update.html'
     fields = ['name', 'description', 'status', 'executor', 'labels']
-    success_url = reverse_lazy('tasks_index')
-    success_message = _('The task was updated')

@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from task_manager.utils import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from task_manager.labels.models import Label
@@ -9,17 +9,13 @@ from task_manager.utils import error_flash
 from django.db.models.deletion import ProtectedError
 
 
-class LabelsIndexView(LoginRequiredMixin, ListView):
+class LabelsIndexView(ListView):
     model = Label
-    template_name = 'labels/index.html'
-    context_object_name = 'labels'
+    fields = ['id', 'name', 'created_at']
 
 
-class LabelDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+class LabelDeleteView(DeleteView):
     model = Label
-    template_name = 'labels/delete.html'
-    success_url = reverse_lazy('labels_index')
-    success_message = _('The label was deleted')
 
     def dispatch(self, request, *args, **kwargs):
         try:
@@ -29,17 +25,11 @@ class LabelDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
             return redirect('labels_index')
 
 
-class LabelCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+class LabelCreateView(CreateView):
     model = Label
-    template_name = 'labels/create.html'
     fields = ['name']
-    success_url = reverse_lazy('labels_index')
-    success_message = _('Label created successfully')
 
 
-class LabelUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+class LabelUpdateView(UpdateView):
     model = Label
-    template_name = 'labels/update.html'
     fields = ['name']
-    success_url = reverse_lazy('labels_index')
-    success_message = _('Label updated successfully')

@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+
+{% load django_bootstrap5 %}
+
+{% load custom_filters %}
+
+{% load i18n %}
+
+{% block content %}
+<h1>{{ model_name_plural }}</h1>
+{% if filter %}
+<div class="card">
+  <div class="card-body bg-light">
+    <form method="get">
+      {% bootstrap_form filter.form %}
+      <button class="btn btn-primary" type="submit">{% trans "Show" %}</button>
+    </form> 
+  </div>
+</div>
+{% endif %}
+<a href="{% url model_name|add:'_create' %}" class="btn btn-primary my-3">{{ create_button_label }}</a>
+<table class="table table-striped" data-test="urls">
+  <thead>
+    <tr>
+      {% for field in field_headers %}
+      <th scope="col">{{ field }}</th>
+      {% endfor %}
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  {% if object_list %}
+  <tbody>
+    {% for object in object_list %}
+    <tr>
+      {% for key in fields %}
+      {% with key_lowered=key|lower %}
+        <td>
+        {% if key_lowered == 'name' and has_details_view %}
+          <a href="{% url model_name|add:'_details' object.id %}">{{ object.name }}</a>
+        {% else %}
+          {{ object|get_dynamic_attribute:key_lowered }}
+        {% endif %}
+        </td>
+      {% endwith %}
+      {% endfor %}
+      <td>
+          <div>
+              <a href="{% url model_name|add:'_update' object.id %}">{% trans "Update" %}</a>
+              <br>
+              <a href="{% url model_name|add:'_delete' object.id %}">{% trans "Delete" %}</a>
+          </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  {% endif %}
+</table>
+{% endblock %}

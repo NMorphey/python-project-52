@@ -3,11 +3,11 @@ from task_manager.labels import views
 
 
 urlpatterns = [
-    path('', views.LabelsIndexView.as_view(), name='labels_index'),
+    path('', views.LabelsIndexView.as_view(), name='label_index'),
     path('create/',
-         views.LabelCreateView.as_view(), name='create_label'),
+         views.LabelCreateView.as_view(), name='label_create'),
     path('<int:pk>/update/',
-         views.LabelUpdateView.as_view(), name='update_label'),
+         views.LabelUpdateView.as_view(), name='label_update'),
     path('<int:pk>/delete/',
-         views.LabelDeleteView.as_view(), name='delete_label')
+         views.LabelDeleteView.as_view(), name='label_delete')
 ]

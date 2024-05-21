@@ -1,9 +1,18 @@
 from django.contrib import messages
+from django.http import HttpRequest
+from django.http.response import HttpResponse as HttpResponse
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.mixins import LoginRequiredMixin as LRM
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.test import TestCase, Client
+from django.views.generic import (
+    ListView as _ListView,
+    CreateView as _CreateView,
+    UpdateView as _UpdateView,
+    DeleteView as _DeleteView
+)
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 # Flash-messages
@@ -81,7 +90,7 @@ class SetUpStatus(SetUpSignedInClient):
     def setUp(self):
         super().setUp()
         self.status_name = 'test_status'
-        self.client.post(reverse_lazy('create_status'),
+        self.client.post(reverse_lazy('status_create'),
                          {'name': self.status_name})
 
 
@@ -90,5 +99,90 @@ class SetUpLabel(SetUpSignedInClient):
     def setUp(self):
         super().setUp()
         self.label_name = 'test_label'
-        self.client.post(reverse_lazy('create_label'),
+        self.client.post(reverse_lazy('label_create'),
                          {'name': self.label_name})
+
+
+# Customized genetic views
+
+class ListView(LoginRequiredMixin, _ListView):
+    template_name = 'common/index.html'
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.model_name = self.__class__.model.__name__.lower()
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            # Trying to render details link. There is no view if error occures
+            # Can be replaced with "if self.__class__.model == Task: ..."
+            # But this is more generic way to check
+            reverse_lazy(f'{self.model_name}_details', kwargs={'pk': 1})[:]
+            context['has_details_view'] = True
+        except Exception:
+            context['has_details_view'] = False
+        context['model_name'] = self.model_name
+        model_name_plural = _(
+            self.model_name.capitalize() + 'e' * (self.model_name[-1] == 's') + 's')
+        context['model_name_plural'] = model_name_plural
+        context['fields'] = self.__class__.fields
+        context['field_headers'] = list(map(
+            # replace() is for created_at
+            lambda field: _(field.replace('_', ' ').capitalize())
+            if field.lower() != 'id'
+            else 'ID',
+            self.__class__.fields
+        ))
+        context['create_button_label'] = _(f'Create {self.model_name}')
+        return context
+
+
+class CreateView(LoginRequiredMixin, SuccessMessageMixin, _CreateView):
+    template_name = 'common/create.html'
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.model_name = self.__class__.model.__name__.lower()
+        self.__class__.success_message = _(
+            f'{self.model_name.capitalize()} created successfully')
+        self.__class__.success_url = reverse_lazy(f'{self.model_name}_index')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = self.model_name
+        context['header'] = _(f'Create {self.model_name}')
+        return context
+
+
+class UpdateView(LoginRequiredMixin, SuccessMessageMixin, _UpdateView):
+    template_name = 'common/update.html'
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.model_name = self.__class__.model.__name__.lower()
+        self.__class__.success_message = _(f'The {self.model_name} was updated')
+        self.__class__.success_url = reverse_lazy(f'{self.model_name}_index')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = self.model_name
+        context['header'] = _(f'Edit {self.model_name}')
+        return context
+
+
+class DeleteView(LoginRequiredMixin, SuccessMessageMixin, _DeleteView):
+    template_name = 'common/delete.html'
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.model_name = self.__class__.model.__name__.lower()
+        self.__class__.success_message = _(f'The {self.model_name} was deleted')
+        self.__class__.success_url = reverse_lazy(f'{self.model_name}_index')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = self.model_name
+        context['header'] = _(f'Delete {self.model_name}')
+        return context

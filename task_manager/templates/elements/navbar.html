@@ -6,9 +6,9 @@
             <a href="{% url 'main_page' %}" class="navbar-brand">{% trans "Task manager" %}</a>
             <li class="nav-item"><a href="{% url 'users_index' %}" class="nav-link">{% trans "Users" %}</a></li>
             {% if request.user.is_authenticated %}
-            <li class="nav-item"><a href="{% url 'statuses_index' %}" class="nav-link">{% trans "Statuses" %}</a></li>
-            <li class="nav-item"><a href="{% url 'labels_index' %}" class="nav-link">{% trans "Labels" %}</a></li>
-            <li class="nav-item"><a href="{% url 'tasks_index' %}" class="nav-link">{% trans "Tasks" %}</a></li>
+            <li class="nav-item"><a href="{% url 'status_index' %}" class="nav-link">{% trans "Statuses" %}</a></li>
+            <li class="nav-item"><a href="{% url 'label_index' %}" class="nav-link">{% trans "Labels" %}</a></li>
+            <li class="nav-item"><a href="{% url 'task_index' %}" class="nav-link">{% trans "Tasks" %}</a></li>
             {% endif %}
         </ul>
         {% if request.user.is_authenticated %}

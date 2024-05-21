@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from task_manager.utils import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from task_manager.statuses.models import Status
@@ -9,17 +9,13 @@ from task_manager.utils import error_flash
 from django.db.models.deletion import ProtectedError
 
 
-class StatusesIndexView(LoginRequiredMixin, ListView):
+class StatusesIndexView(ListView):
     model = Status
-    template_name = 'statuses/index.html'
-    context_object_name = 'statuses'
+    fields = ['id', 'name', 'created_at']
 
 
-class StatusDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+class StatusDeleteView(DeleteView):
     model = Status
-    template_name = 'statuses/delete.html'
-    success_url = reverse_lazy('statuses_index')
-    success_message = _('The status was deleted')
 
     def dispatch(self, request, *args, **kwargs):
         try:
@@ -29,17 +25,11 @@ class StatusDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
             return redirect('statuses_index')
 
 
-class StatusCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+class StatusCreateView(CreateView):
     model = Status
-    template_name = 'statuses/create.html'
     fields = ['name']
-    success_url = reverse_lazy('statuses_index')
-    success_message = _('Status created successfully')
 
 
-class StatusUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+class StatusUpdateView(UpdateView):
     model = Status
-    template_name = 'statuses/update.html'
     fields = ['name']
-    success_url = reverse_lazy('statuses_index')
-    success_message = _('The status was updated')

@@ -3,13 +3,13 @@ from task_manager.tasks import views
 
 
 urlpatterns = [
-    path('', views.TasksIndexView.as_view(), name='tasks_index'),
+    path('', views.TasksIndexView.as_view(), name='task_index'),
     path('create/',
-         views.TaskCreateView.as_view(), name='create_task'),
+         views.TaskCreateView.as_view(), name='task_create'),
     path('<int:pk>/',
          views.TaskDetailView.as_view(), name='task_details'),
     path('<int:pk>/update/',
-         views.TaskUpdateView.as_view(), name='update_task'),
+         views.TaskUpdateView.as_view(), name='task_update'),
     path('<int:pk>/delete/',
-         views.TaskDeleteView.as_view(), name='delete_task')
+         views.TaskDeleteView.as_view(), name='task_delete')
 ]
