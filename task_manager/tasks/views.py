@@ -1,12 +1,9 @@
 from django.shortcuts import redirect
 from django.views.generic import DetailView
 from task_manager.utils import ListView, CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
 from task_manager.tasks.models import Task
 from task_manager.utils import LoginRequiredMixin, error_flash
-from django.contrib.messages.views import SuccessMessageMixin
 from task_manager.tasks.filters import TaskFilter
-from django.utils.translation import gettext_lazy as _
 
 
 class TasksIndexView(ListView):

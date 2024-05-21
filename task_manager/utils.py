@@ -1,6 +1,4 @@
 from django.contrib import messages
-from django.http import HttpRequest
-from django.http.response import HttpResponse as HttpResponse
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.mixins import LoginRequiredMixin as LRM
 from django.urls import reverse_lazy
@@ -112,7 +110,6 @@ class ListView(LoginRequiredMixin, _ListView):
         super().__init__(**kwargs)
         self.model_name = self.__class__.model.__name__.lower()
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         try:
@@ -125,7 +122,9 @@ class ListView(LoginRequiredMixin, _ListView):
             context['has_details_view'] = False
         context['model_name'] = self.model_name
         model_name_plural = _(
-            self.model_name.capitalize() + 'e' * (self.model_name[-1] == 's') + 's')
+            self.model_name.capitalize()
+            + 'e' * (self.model_name[-1] == 's')
+            + 's')
         context['model_name_plural'] = model_name_plural
         context['fields'] = self.__class__.fields
         context['field_headers'] = list(map(
@@ -162,7 +161,8 @@ class UpdateView(LoginRequiredMixin, SuccessMessageMixin, _UpdateView):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.model_name = self.__class__.model.__name__.lower()
-        self.__class__.success_message = _(f'The {self.model_name} was updated')
+        self.__class__.success_message = _(
+            f'The {self.model_name} was updated')
         self.__class__.success_url = reverse_lazy(f'{self.model_name}_index')
 
     def get_context_data(self, **kwargs):
@@ -178,7 +178,8 @@ class DeleteView(LoginRequiredMixin, SuccessMessageMixin, _DeleteView):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.model_name = self.__class__.model.__name__.lower()
-        self.__class__.success_message = _(f'The {self.model_name} was deleted')
+        self.__class__.success_message = _(
+            f'The {self.model_name} was deleted')
         self.__class__.success_url = reverse_lazy(f'{self.model_name}_index')
 
     def get_context_data(self, **kwargs):

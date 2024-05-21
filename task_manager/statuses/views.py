@@ -1,10 +1,6 @@
 from django.shortcuts import redirect
 from task_manager.utils import ListView, CreateView, UpdateView, DeleteView
-from django.contrib.messages.views import SuccessMessageMixin
-from django.urls import reverse_lazy
 from task_manager.statuses.models import Status
-from task_manager.utils import LoginRequiredMixin
-from django.utils.translation import gettext_lazy as _
 from task_manager.utils import error_flash
 from django.db.models.deletion import ProtectedError
 
