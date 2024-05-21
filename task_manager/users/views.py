@@ -1,13 +1,16 @@
 from django.views import View
 from django.shortcuts import render, redirect, get_object_or_404
 from task_manager.users.forms import UserForm
-from django.contrib.auth.models import User
 from task_manager.utils import success_flash, error_flash, LoginRequiredMixin
 from django.views.generic import ListView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models.deletion import ProtectedError
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
 
 
 class UsersIndexView(ListView):
