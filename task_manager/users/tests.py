@@ -27,7 +27,7 @@ class CRUDTestCase(SetUpUsers):
 
         self.client.post(reverse_lazy('login'), self.user_1_login_data)
         response = self.client.get(reverse_lazy('main_page'))
-        self.assertNotContains(response, reverse_lazy('logout'))
+        self.assertContains(response, reverse_lazy('logout'))
         self.check_flash(response, 'Logged in successfully')
 
     def test_users_are_allowed_to_update_and_delete_only_themselves(self):
