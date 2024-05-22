@@ -1,12 +1,13 @@
 from typing import Any
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import forms
 from django.contrib.auth import get_user_model
+from django.utils.translation import gettext_lazy as _
 
 
 User = get_user_model()
 
 
-class UserForm(UserCreationForm):
+class UserForm(forms.UserCreationForm):
 
     class Meta:
         model = User
@@ -22,3 +23,14 @@ class UserForm(UserCreationForm):
             )
             self.fields[field].widget.attrs['placeholder'] = \
                 self.fields[field].label
+
+
+class UserUpdateForm(UserForm):
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if User.objects.filter(username=username)\
+                .exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError(
+                _('A user with that username already exists.'))
+        return username
