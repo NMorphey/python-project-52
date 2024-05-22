@@ -2,7 +2,6 @@ from django.db import models
 from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth import get_user_model
 from task_manager.users.models import User
 
 

@@ -1,6 +1,5 @@
 from typing import Any
 from django.contrib.auth import forms
-from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from task_manager.users.models import User
 
