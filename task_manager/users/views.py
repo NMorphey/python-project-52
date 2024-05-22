@@ -8,9 +8,7 @@ from django.db.models.deletion import ProtectedError
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from task_manager.users.utils import check_access_to_modify
-
-
-User = get_user_model()
+from task_manager.users.models import User
 
 
 class UsersIndexView(ListView):
