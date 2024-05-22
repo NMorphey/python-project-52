@@ -1,13 +1,13 @@
-from django.views import View
-from django.shortcuts import render, redirect, get_object_or_404
-from task_manager.users.forms import UserForm
-from task_manager.utils import success_flash, error_flash, LoginRequiredMixin
-from django.views.generic import ListView, DeleteView
+from django.shortcuts import redirect
+from task_manager.users.forms import UserForm, UserUpdateForm
+from task_manager.utils import error_flash, LoginRequiredMixin
+from django.views.generic import ListView, DeleteView, UpdateView, CreateView
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models.deletion import ProtectedError
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
+from task_manager.users.utils import check_access_to_modify
 
 
 User = get_user_model()
@@ -19,69 +19,27 @@ class UsersIndexView(ListView):
     template_name = 'users/index.html'
 
 
-class RegistrationView(View):
+class RegistrationView(SuccessMessageMixin, CreateView):
 
-    def get(self, request, *args, **kwargs):
-        return render(
-            request,
-            'users/create.html',
-            {'form': UserForm()}
-        )
-
-    def post(self, request, *args, **kwargs):
-        form = UserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            success_flash(request, 'The user created successfully')
-            return redirect('login')
-        return render(
-            request,
-            'users/create.html',
-            {'form': form}
-        )
+    model = User
+    form_class = UserForm
+    template_name = 'users/create.html'
+    success_url = reverse_lazy('users_index')
+    success_message = _('The user created successfully')
 
 
-class UpdateUserView(LoginRequiredMixin, View):
+class UpdateUserView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
-    def get(self, request, *args, **kwargs):
-        id = kwargs['pk']
-        if request.user.id != id:
-            error_flash(
-                request, 'You are not authorized to modify other users.'
-            )
-            return redirect('users_index')
-        user = get_object_or_404(User, id=id)
-        form = UserForm(instance=user)
-        return render(request, 'users/update.html',
-                      {'form': form, 'id': id})
+    model = User
+    form_class = UserUpdateForm
+    template_name = 'users/update.html'
+    context_object_name = 'user'
+    success_url = reverse_lazy('users_index')
+    success_message = _('User updated successfully')
 
-    def post(self, request, *args, **kwargs):
-        id = kwargs['pk']
-        if request.user.id != id:
-            error_flash(
-                request, 'You are not authorized to modify other users.'
-            )
-            return redirect('users_index')
-
-        form = UserForm(request.POST)
-        if str(_('A user with that username already exists.')) \
-                in str(form.errors):
-            form.errors.pop('username')
-            form.cleaned_data['username'] = form.data['username']
-        if form.is_valid():
-            user = User.objects.get(id=id)
-            user.first_name = form.cleaned_data['first_name']
-            user.last_name = form.cleaned_data['last_name']
-            user.username = form.cleaned_data['username']
-            user.set_password(form.cleaned_data['password1'])
-            user.save()
-            success_flash(request, 'User updated successfully')
-            return redirect('users_index')
-        return render(
-            request,
-            'users/update.html',
-            {'form': form, 'id': id}
-        )
+    @check_access_to_modify
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 class DeleteUserView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
@@ -91,12 +49,8 @@ class DeleteUserView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     success_url = reverse_lazy('users_index')
     success_message = _('User deleted successfully')
 
+    @check_access_to_modify
     def dispatch(self, request, *args, **kwargs):
-        if kwargs['pk'] != request.user.id:
-            error_flash(
-                request, 'You are not authorized to modify other users.'
-            )
-            return redirect('users_index')
         try:
             return super().dispatch(request, *args, **kwargs)
         except ProtectedError:
