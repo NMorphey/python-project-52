@@ -11,6 +11,7 @@ from django.views.generic import (
     DeleteView as _DeleteView
 )
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.messages import get_messages
 
 
 # Flash-messages
@@ -99,6 +100,13 @@ class SetUpLabel(SetUpSignedInClient):
         self.label_name = 'test_label'
         self.client.post(reverse_lazy('label_create'),
                          {'name': self.label_name})
+
+
+class CheckFlashMixin:
+
+    def check_flash(self, response, message):
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(str(messages[-1]), _(message))
 
 
 # Customized genetic views
