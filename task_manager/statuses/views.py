@@ -18,7 +18,7 @@ class StatusDeleteView(DeleteView):
             return super().dispatch(request, *args, **kwargs)
         except ProtectedError:
             error_flash(request, 'Assigned status cannot be deleted')
-            return redirect('statuses_index')
+            return redirect('status_index')
 
 
 class StatusCreateView(CreateView):

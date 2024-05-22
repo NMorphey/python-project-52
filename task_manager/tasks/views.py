@@ -39,7 +39,7 @@ class TaskDeleteView(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         if Task.objects.get(id=kwargs['pk']).author.id != request.user.id:
             error_flash(request, 'A task can only be deleted by its author')
-            return redirect('tasks_index')
+            return redirect('task_index')
         return super().dispatch(request, *args, **kwargs)
 
 

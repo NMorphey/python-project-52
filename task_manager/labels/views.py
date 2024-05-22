@@ -18,7 +18,7 @@ class LabelDeleteView(DeleteView):
             return super().dispatch(request, *args, **kwargs)
         except ProtectedError:
             error_flash(request, 'Assigned label cannot be deleted')
-            return redirect('labels_index')
+            return redirect('label_index')
 
 
 class LabelCreateView(CreateView):
