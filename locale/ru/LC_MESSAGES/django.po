@@ -183,7 +183,7 @@ msgstr "Метка успешно удалена"
 msgid "Label created successfully"
 msgstr "Метка успешно создана"
 
-msgid "Label updated successfully"
+msgid "The label was updated"
 msgstr "Метка успешно изменена"
 
 msgid "Show"
