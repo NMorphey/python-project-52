@@ -70,7 +70,7 @@ class CRUDTestCase(SetUpTask, CheckFlashMixin):
         self.assertContains(response, 'renamed_task')
 
 
-class QueryTestCase(SetUpUsers):
+class QueryAndProtectionTestCase(SetUpUsers, CheckFlashMixin):
 
     def setUp(self):
         super().setUp()
@@ -152,3 +152,16 @@ class QueryTestCase(SetUpUsers):
         self.assertNotContains(response, 'task1')
         self.assertNotContains(response, 'task2')
         self.assertContains(response, 'task3')
+
+    def test_protections(self):
+        response = self.client.post(
+            reverse_lazy('label_delete', kwargs={'pk': 1})
+        )
+        self.assertRedirects(response, 'label_index')
+        self.check_flash(response, 'Assigned label cannot be deleted')
+
+        response = self.client.post(
+            reverse_lazy('status_delete', kwargs={'pk': 1})
+        )
+        self.assertRedirects(response, 'status_index')
+        self.check_flash(response, 'Assigned status cannot be deleted')
