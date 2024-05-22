@@ -30,7 +30,27 @@ class CRUDTestCase(SetUpUsers, CheckFlashMixin):
         self.assertContains(response, reverse_lazy('logout'))
         self.check_flash(response, 'Logged in successfully')
 
-    def test_users_are_allowed_to_update_and_delete_only_themselves(self):
+    def task_cannot_delete_other_users(self):
+        # Signing in as pk-1 user
+        self.client.post(reverse_lazy('login'), self.user_1_login_data)
+
+        response = self.client.get(
+            reverse_lazy('delete_user', kwargs={'pk': 2})
+        )
+        self.assertRedirects(response, reverse_lazy('users_index'))
+        self.check_flash(response,
+                         'You are not authorized to modify other users.')
+
+        response = self.client.post(
+            reverse_lazy('delete_user', kwargs={'pk': 2}))
+        self.assertRedirects(response, reverse_lazy('users_index'))
+        self.check_flash(response,
+                         'You are not authorized to modify other users.')
+
+        response = self.client.get(reverse_lazy('users_index'))
+        self.assertContains(response, 'another_user')
+
+    def test_cannot_update_other_users(self):
         # Signing in as pk-1 user
         self.client.post(reverse_lazy('login'), self.user_1_login_data)
 
@@ -40,33 +60,19 @@ class CRUDTestCase(SetUpUsers, CheckFlashMixin):
         self.assertRedirects(response, reverse_lazy('users_index'))
         self.check_flash(response,
                          'You are not authorized to modify other users.')
-        response = self.client.get(
-            reverse_lazy('delete_user', kwargs={'pk': 2})
+
+        update_data = self.user_2_data
+        update_data['username'] = 'some_new_username'
+        response = self.client.post(
+            reverse_lazy('update_user', kwargs={'pk': 2}), update_data
         )
         self.assertRedirects(response, reverse_lazy('users_index'))
         self.check_flash(response,
                          'You are not authorized to modify other users.')
-        response = self.client.get(reverse_lazy('main_page'))
-
-        update_data = self.user_1_data
-        update_data['username'] = 'some_new_username'
-        self.client.post(
-            reverse_lazy('update_user', kwargs={'pk': 2}), update_data
-        )
-        self.client.post(reverse_lazy('delete_user', kwargs={'pk': 2}))
 
         response = self.client.get(reverse_lazy('users_index'))
         self.assertContains(response, 'another_user')
         self.assertNotContains(response, 'some_new_username')
-
-        response = self.client.get(
-            reverse_lazy('update_user', kwargs={'pk': 1})
-        )
-        self.assertEqual(response.status_code, 200)
-        response = self.client.get(
-            reverse_lazy('delete_user', kwargs={'pk': 1})
-        )
-        self.assertEqual(response.status_code, 200)
 
     def test_update(self):
         self.client.post(reverse_lazy('login'), self.user_1_login_data)
@@ -86,7 +92,8 @@ class CRUDTestCase(SetUpUsers, CheckFlashMixin):
     def test_delete(self):
         self.client.post(reverse_lazy('login'), self.user_1_login_data)
 
-        response = self.client.post(reverse_lazy('delete_user', kwargs={'pk': 1}))
+        response = self.client.post(
+            reverse_lazy('delete_user', kwargs={'pk': 1}))
         self.assertRedirects(response, reverse_lazy('users_index'))
         self.check_flash(response, 'User deleted successfully')
 
