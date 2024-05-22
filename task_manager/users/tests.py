@@ -17,6 +17,17 @@ class GuestUserTestCase(SetUpClient):
 
 class CRUDTestCase(SetUpUsers, CheckFlashMixin):
 
+    def test_registration(self):
+        response = self.client.post(reverse_lazy('registration'), {
+            'first_name': 'first',
+            'last_name': 'last',
+            'username': '123',
+            'password1': '123',
+            'password2': '123'
+        })
+        self.assertRedirects(response, reverse_lazy('login'))
+        self.check_flash(response, 'The user created successfully')
+
     def test_set_up(self):
         response = self.client.get(reverse_lazy('users_index'))
         self.assertContains(response, 'User Testov')
