@@ -17,7 +17,7 @@ class GuestUserTestCase(SetUpClient):
 
 class CRUDTestCase(SetUpUsers):
 
-    def test_sign_up(self):
+    def test_set_up(self):
         response = self.client.get(reverse_lazy('users_index'))
         self.assertContains(response, 'User Testov')
 
