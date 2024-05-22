@@ -22,10 +22,3 @@ class UserForm(UserCreationForm):
             )
             self.fields[field].widget.attrs['placeholder'] = \
                 self.fields[field].label
-
-
-class LoginForm(UserForm):
-
-    class Meta:
-        model = User
-        fields = ['username', 'password1']
