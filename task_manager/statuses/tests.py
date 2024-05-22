@@ -1,8 +1,8 @@
 from django.urls import reverse_lazy
-from task_manager.utils import SetUpUsers, SetUpStatus
+from task_manager.utils import SetUpUsers, SetUpStatus, CheckFlashMixin
 
 
-class UnavailableForGuestsTestCase(SetUpUsers):
+class UnavailableForGuestsTestCase(SetUpUsers, CheckFlashMixin):
 
     def test_category_on_main_page(self):
         response = self.client.get(reverse_lazy('main_page'))
@@ -14,17 +14,21 @@ class UnavailableForGuestsTestCase(SetUpUsers):
 
     def test_redirects(self):
         response = self.client.get(reverse_lazy('status_index'))
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse_lazy('login'))
+        self.check_flash(response,
+                         'This can be done only by an authenticated user!')
 
 
-class CRUDTestCase(SetUpStatus):
+class CRUDTestCase(SetUpStatus, CheckFlashMixin):
 
     def test_create(self):
         response = self.client.get(reverse_lazy('status_index'))
         self.assertNotContains(response, 'created_status')
 
-        self.client.post(reverse_lazy('status_create'),
-                         {'name': 'created_status'})
+        response = self.client.post(reverse_lazy('status_create'),
+                                    {'name': 'created_status'})
+        self.assertRedirects(response, reverse_lazy('status_index'))
+        self.check_flash(response, 'Status created successfully')
 
         response = self.client.get(reverse_lazy('status_index'))
         self.assertContains(response, 'created_status')
@@ -34,7 +38,11 @@ class CRUDTestCase(SetUpStatus):
         self.assertContains(response, self.status_name)
 
     def test_delete(self):
-        self.client.post(reverse_lazy('status_delete', kwargs={'pk': 1}))
+        response = self.client.post(reverse_lazy('status_delete',
+                                                 kwargs={'pk': 1}))
+        self.assertRedirects(response, reverse_lazy('status_index'))
+        self.check_flash(response, "The status was deleted")
+
         response = self.client.get(reverse_lazy('status_index'))
         self.assertNotContains(response, self.status_name)
 
@@ -42,8 +50,11 @@ class CRUDTestCase(SetUpStatus):
         response = self.client.get(reverse_lazy('status_index'))
         self.assertNotContains(response, 'renamed_status')
 
-        self.client.post(reverse_lazy('status_update', kwargs={'pk': 1}),
-                         {'name': 'renamed_status'})
+        response = self.client.post(
+            reverse_lazy('status_update', kwargs={'pk': 1}),
+            {'name': 'renamed_status'})
+        self.assertRedirects(response, reverse_lazy('status_index'))
+        self.check_flash(response, "The status was updated")
 
         response = self.client.get(reverse_lazy('status_index'))
         self.assertNotContains(response, self.status_name)

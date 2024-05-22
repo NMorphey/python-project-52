@@ -1,8 +1,8 @@
 from django.urls import reverse_lazy
-from task_manager.utils import SetUpUsers, SetUpLabel
+from task_manager.utils import SetUpUsers, SetUpLabel, CheckFlashMixin
 
 
-class UnavailableForGuestsTestCase(SetUpUsers):
+class UnavailableForGuestsTestCase(SetUpUsers, CheckFlashMixin):
 
     def test_category_on_main_page(self):
         response = self.client.get(reverse_lazy('main_page'))
@@ -14,17 +14,21 @@ class UnavailableForGuestsTestCase(SetUpUsers):
 
     def test_redirects(self):
         response = self.client.get(reverse_lazy('label_index'))
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse_lazy('login'))
+        self.check_flash(response,
+                         'This can be done only by an authenticated user!')
 
 
-class CRUDTestCase(SetUpLabel):
+class CRUDTestCase(SetUpLabel, CheckFlashMixin):
 
     def test_create(self):
         response = self.client.get(reverse_lazy('label_index'))
         self.assertNotContains(response, 'created_label')
 
-        self.client.post(reverse_lazy('label_create'),
-                         {'name': 'created_label'})
+        response = self.client.post(reverse_lazy('label_create'),
+                                    {'name': 'created_label'})
+        self.assertRedirects(response, reverse_lazy('label_index'))
+        self.check_flash(response, 'Label created successfully')
 
         response = self.client.get(reverse_lazy('label_index'))
         self.assertContains(response, 'created_label')
@@ -34,7 +38,11 @@ class CRUDTestCase(SetUpLabel):
         self.assertContains(response, self.label_name)
 
     def test_delete(self):
-        self.client.post(reverse_lazy('label_delete', kwargs={'pk': 1}))
+        response = self.client.post(reverse_lazy('label_delete',
+                                                 kwargs={'pk': 1}))
+        self.assertRedirects(response, reverse_lazy('label_index'))
+        self.check_flash(response, "The label was deleted")
+
         response = self.client.get(reverse_lazy('label_index'))
         self.assertNotContains(response, self.label_name)
 
@@ -42,8 +50,11 @@ class CRUDTestCase(SetUpLabel):
         response = self.client.get(reverse_lazy('label_index'))
         self.assertNotContains(response, 'renamed_label')
 
-        self.client.post(reverse_lazy('label_update', kwargs={'pk': 1}),
-                         {'name': 'renamed_label'})
+        response = self.client.post(
+            reverse_lazy('label_update', kwargs={'pk': 1}),
+            {'name': 'renamed_label'})
+        self.assertRedirects(response, reverse_lazy('label_index'))
+        self.check_flash(response, "The label was updated")
 
         response = self.client.get(reverse_lazy('label_index'))
         self.assertNotContains(response, self.label_name)
