@@ -9,9 +9,6 @@
 ### Deployed
 https://taskmanager-ny6t.onrender.com  
 
-### About
-*This is an educational project. It's on the final stage of of creation, but some changes (e.g. refactoring, minor pages redesigns) still can be applied.*
-
 ### How to deploy or run locally
 #### Package can be installed with following command:
 >
