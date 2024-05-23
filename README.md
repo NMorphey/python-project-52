@@ -22,9 +22,9 @@ https://taskmanager-ny6t.onrender.com
 * Poetry (1.8+)
 #### Environment
 There are several env variables you may need to set:
-* SECRET_KEY (mandatory)
-* ACCESS_TOKEN (if you want to use Rollbar's error tracking - [see more](https://docs.rollbar.com/docs/django))
-* DATABASE_URL (if you want to use DB other than SQLite - highly recommended)
+* `SECRET_KEY` (mandatory)
+* `ACCESS_TOKEN` (if you want to use Rollbar's error tracking - [see more](https://docs.rollbar.com/docs/django))
+* `DATABASE_URL` (if you want to use DB other than SQLite - highly recommended)
 #### settings.py
 Project's settings are configured for deploying on [Render.com](https://render.com/). If you  are planning to host it somewhere else, make sure to edit following:
 * `DEBUG` constant;
