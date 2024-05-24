@@ -1,8 +1,8 @@
 from django.views import View
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
-from task_manager.utils import info_flash, success_flash
+from django.shortcuts import render
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.messages.views import SuccessMessageMixin
+from django.utils.translation import gettext_lazy as _
 
 
 class IndexView(View):
@@ -11,28 +11,11 @@ class IndexView(View):
         return render(request, 'index.html')
 
 
-class LogInView(View):
+class CustomLoginView(SuccessMessageMixin, LoginView):
 
-    def get(self, request, *args, **kwargs):
-        return render(request, 'login.html', {'form': AuthenticationForm()})
-
-    def post(self, request, *args, **kwargs):
-        user = authenticate(
-            request=request,
-            username=request.POST['username'],
-            password=request.POST['password']
-        )
-        if user is not None:
-            login(request, user)
-            success_flash(request, 'Logged in successfully')
-            return redirect('main_page')
-        form = AuthenticationForm(data=request.POST)
-        return render(request, 'login.html', {'form': form})
+    success_message = ('Logged in successfully')
 
 
-class LogOutView(View):
+class CustomLogoutView(SuccessMessageMixin, LogoutView):
 
-    def post(self, request, *args, **kwargs):
-        logout(request)
-        info_flash(request, 'Logged out')
-        return redirect('main_page')
+    success_message = _('Logged out')
