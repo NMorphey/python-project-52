@@ -13,7 +13,7 @@ class IndexView(View):
 
 class CustomLoginView(SuccessMessageMixin, LoginView):
 
-    success_message = ('Logged in successfully')
+    success_message = _('Logged in successfully')
 
 
 class CustomLogoutView(SuccessMessageMixin, LogoutView):
