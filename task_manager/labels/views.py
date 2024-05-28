@@ -1,16 +1,16 @@
 from django.shortcuts import redirect
-from task_manager.utils import ListView
 from task_manager.labels.models import Label
 from task_manager.utils import error_flash
 from django.db.models.deletion import ProtectedError
 from task_manager.utils import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
 
 
-class LabelsIndexView(ListView):
+class LabelsIndexView(LoginRequiredMixin, ListView):
+    template_name = 'labels/index.html'
     model = Label
     fields = ['id', 'name', 'created_at']
 

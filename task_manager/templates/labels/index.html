@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% load django_bootstrap5 %}
+
+{% load custom_filters %}
+
+{% load i18n %}
+
+{% block content %}
+<h1>{% trans 'Labels' %}</h1>
+<a href="{% url 'label_create' %}" class="btn btn-primary my-3">{% trans 'Create label' %}</a>
+<table class="table table-striped" data-test="urls">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">{% trans 'Name' %}</th>
+      <th scope="col">{% trans 'Created at' %}</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  {% if object_list %}
+  <tbody>
+    {% for label in object_list %}
+    <tr>
+      <td>{{ label.id }}</td>
+      <td>{{ label.name }}</td>
+      <td>{{ label.created_at }}</td>
+      <td>
+          <div>
+              <a href="{% url 'label_update' label.id %}">{% trans "Update" %}</a>
+              <br>
+              <a href="{% url 'label_delete' label.id %}">{% trans "Delete" %}</a>
+          </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  {% endif %}
+</table>
+{% endblock %}

@@ -1,17 +1,17 @@
 from django.shortcuts import redirect
 from django.views.generic import DetailView
-from task_manager.utils import ListView
 from task_manager.tasks.models import Task
 from task_manager.utils import LoginRequiredMixin, error_flash
 from task_manager.tasks.filters import TaskFilter
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
 
 
 
-class TasksIndexView(ListView):
+class TasksIndexView(LoginRequiredMixin, ListView):
+    template_name = 'tasks/index.html'
     model = Task
     fields = ['id', 'name', 'status', 'author', 'executor', 'created_at']
 
