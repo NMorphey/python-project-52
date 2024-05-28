@@ -3,7 +3,7 @@ from task_manager.utils import ListView
 from task_manager.statuses.models import Status
 from task_manager.utils import error_flash
 from django.db.models.deletion import ProtectedError
-from django.contrib.auth.mixins import LoginRequiredMixin
+from task_manager.utils import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.utils.translation import gettext_lazy as _
