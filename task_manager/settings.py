@@ -16,6 +16,7 @@ from dotenv import load_dotenv
 
 import dj_database_url
 from django.utils.translation import gettext_lazy as _
+from django.urls import reverse_lazy
 import rollbar
 
 
@@ -250,5 +251,7 @@ BOOTSTRAP5 = {
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
-LOGIN_REDIRECT_URL = '/'  # Redirect to home page after login
-LOGOUT_REDIRECT_URL = '/'  # Redirect to home page after logout
+LOGIN_REDIRECT_URL = reverse_lazy('main_page')  # Redirect to home page after login
+LOGOUT_REDIRECT_URL = reverse_lazy('main_page')  # Redirect to home page after logout
+
+LOGIN_URL = reverse_lazy('login')
