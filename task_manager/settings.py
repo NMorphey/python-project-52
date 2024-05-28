@@ -251,7 +251,7 @@ BOOTSTRAP5 = {
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
-LOGIN_REDIRECT_URL = reverse_lazy('main_page')  # Redirect to home page after login
-LOGOUT_REDIRECT_URL = reverse_lazy('main_page')  # Redirect to home page after logout
+LOGIN_REDIRECT_URL = reverse_lazy('main_page')
+LOGOUT_REDIRECT_URL = reverse_lazy('main_page')
 
 LOGIN_URL = reverse_lazy('login')

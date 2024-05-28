@@ -4,13 +4,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin as LRM
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.test import TestCase, Client
-from django.views.generic import (
-    ListView as _ListView,
-    CreateView as _CreateView,
-    UpdateView as _UpdateView,
-    DeleteView as _DeleteView
-)
-from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.messages import get_messages
 
 

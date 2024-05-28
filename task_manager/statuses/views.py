@@ -24,7 +24,7 @@ class StatusCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['header'] = _(f'Create status')
+        context['header'] = _('Create status')
         return context
 
 
@@ -37,7 +37,7 @@ class StatusUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['header'] = _(f'Edit status')
+        context['header'] = _('Edit status')
         return context
 
 
@@ -49,7 +49,7 @@ class StatusDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['header'] = _(f'Delete status')
+        context['header'] = _('Delete status')
         return context
 
     def dispatch(self, request, *args, **kwargs):

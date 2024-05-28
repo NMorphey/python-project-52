@@ -1,13 +1,11 @@
-from django.shortcuts import redirect
 from django.views.generic import DetailView
 from task_manager.tasks.models import Task
-from task_manager.utils import LoginRequiredMixin, error_flash
+from task_manager.utils import LoginRequiredMixin
 from task_manager.tasks.filters import TaskFilter
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
-
 
 
 class TasksIndexView(LoginRequiredMixin, ListView):
@@ -47,7 +45,7 @@ class TaskCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['header'] = _(f'Create task')
+        context['header'] = _('Create task')
         return context
 
     def form_valid(self, form):
@@ -64,7 +62,7 @@ class TaskUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['header'] = _(f'Edit task')
+        context['header'] = _('Edit task')
         return context
 
 
@@ -76,5 +74,5 @@ class TaskDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['header'] = _(f'Delete task')
+        context['header'] = _('Delete task')
         return context

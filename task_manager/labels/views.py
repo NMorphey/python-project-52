@@ -24,7 +24,7 @@ class LabelCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['header'] = _(f'Create label')
+        context['header'] = _('Create label')
         return context
 
 
@@ -37,7 +37,7 @@ class LabelUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['header'] = _(f'Edit label')
+        context['header'] = _('Edit label')
         return context
 
 
@@ -49,7 +49,7 @@ class LabelDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['header'] = _(f'Delete label')
+        context['header'] = _('Delete label')
         return context
 
     def dispatch(self, request, *args, **kwargs):
