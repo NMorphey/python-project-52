@@ -1,9 +1,14 @@
 from django.shortcuts import redirect
 from django.views.generic import DetailView
-from task_manager.utils import ListView, CreateView, UpdateView, DeleteView
+from task_manager.utils import ListView
 from task_manager.tasks.models import Task
 from task_manager.utils import LoginRequiredMixin, error_flash
 from task_manager.tasks.filters import TaskFilter
+from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic import CreateView, UpdateView, DeleteView
+from django.utils.translation import gettext_lazy as _
+from django.urls import reverse_lazy
+
 
 
 class TasksIndexView(ListView):
@@ -33,25 +38,43 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'task'
 
 
-class TaskDeleteView(DeleteView):
-    model = Task
-
-    def dispatch(self, request, *args, **kwargs):
-        if Task.objects.get(id=kwargs['pk']).author.id != request.user.id:
-            error_flash(request, 'A task can only be deleted by its author')
-            return redirect('task_index')
-        return super().dispatch(request, *args, **kwargs)
-
-
-class TaskCreateView(CreateView):
+class TaskCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Task
     fields = ['name', 'description', 'status', 'executor', 'labels']
+    template_name = 'common/create.html'
+    success_message = _('Task created successfully')
+    success_url = reverse_lazy('task_index')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['header'] = _(f'Create task')
+        return context
 
     def form_valid(self, form):
         form.instance.author_id = self.request.user.id
         return super().form_valid(form)
 
 
-class TaskUpdateView(UpdateView):
+class TaskUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Task
     fields = ['name', 'description', 'status', 'executor', 'labels']
+    template_name = 'common/update.html'
+    success_message = _('The task was updated')
+    success_url = reverse_lazy('task_index')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['header'] = _(f'Edit task')
+        return context
+
+
+class TaskDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    model = Task
+    template_name = 'common/delete.html'
+    success_message = _('The task was deleted')
+    success_url = reverse_lazy('task_index')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['header'] = _(f'Delete task')
+        return context

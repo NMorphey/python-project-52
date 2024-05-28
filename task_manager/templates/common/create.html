@@ -6,7 +6,7 @@
 
 {% block content %}
 <h1 class="mb-4">{{ header }}</h1>
-<form class="form-group input-group-lg input-group-prepend control-label" action="{% url model_name|add:'_create' %}" method="post">
+<form class="form-group input-group-lg input-group-prepend control-label" method="post">
     {% csrf_token %}
     {% bootstrap_form form %}
     <input class="btn btn-primary" type="submit" value="{% trans 'Create' %}">

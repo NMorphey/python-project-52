@@ -109,7 +109,7 @@ class CheckFlashMixin:
         self.assertEqual(str(messages[-1]), _(message))
 
 
-# Customized genetic views
+# Customized generic view
 
 class ListView(LoginRequiredMixin, _ListView):
     template_name = 'common/index.html'
@@ -143,55 +143,4 @@ class ListView(LoginRequiredMixin, _ListView):
             self.__class__.fields
         ))
         context['create_button_label'] = _(f'Create {self.model_name}')
-        return context
-
-
-class CreateView(LoginRequiredMixin, SuccessMessageMixin, _CreateView):
-    template_name = 'common/create.html'
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.model_name = self.__class__.model.__name__.lower()
-        self.__class__.success_message = _(
-            f'{self.model_name.capitalize()} created successfully')
-        self.__class__.success_url = reverse_lazy(f'{self.model_name}_index')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['model_name'] = self.model_name
-        context['header'] = _(f'Create {self.model_name}')
-        return context
-
-
-class UpdateView(LoginRequiredMixin, SuccessMessageMixin, _UpdateView):
-    template_name = 'common/update.html'
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.model_name = self.__class__.model.__name__.lower()
-        self.__class__.success_message = _(
-            f'The {self.model_name} was updated')
-        self.__class__.success_url = reverse_lazy(f'{self.model_name}_index')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['model_name'] = self.model_name
-        context['header'] = _(f'Edit {self.model_name}')
-        return context
-
-
-class DeleteView(LoginRequiredMixin, SuccessMessageMixin, _DeleteView):
-    template_name = 'common/delete.html'
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.model_name = self.__class__.model.__name__.lower()
-        self.__class__.success_message = _(
-            f'The {self.model_name} was deleted')
-        self.__class__.success_url = reverse_lazy(f'{self.model_name}_index')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['model_name'] = self.model_name
-        context['header'] = _(f'Delete {self.model_name}')
         return context
