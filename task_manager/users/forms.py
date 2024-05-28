@@ -1,10 +1,10 @@
 from typing import Any
-from django.contrib.auth import forms
+from django.contrib.auth.forms import UserCreationForm, ValidationError
 from django.utils.translation import gettext_lazy as _
 from task_manager.users.models import User
 
 
-class UserForm(forms.UserCreationForm):
+class UserForm(UserCreationForm):
 
     class Meta:
         model = User
@@ -28,6 +28,6 @@ class UserUpdateForm(UserForm):
         username = self.cleaned_data.get('username')
         if User.objects.filter(username=username)\
                 .exclude(pk=self.instance.pk).exists():
-            raise forms.ValidationError(
+            raise ValidationError(
                 _('A user with that username already exists.'))
         return username
