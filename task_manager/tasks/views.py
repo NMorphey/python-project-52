@@ -15,13 +15,6 @@ class TasksIndexView(LoginRequiredMixin, FilterView):
     fields = ['id', 'name', 'status', 'author', 'executor', 'created_at']
     filterset_class = TaskFilter
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        filter = TaskFilter(
-            self.request.GET, queryset=queryset, request=self.request
-        )
-        return filter.qs
-
 
 class TaskDetailView(LoginRequiredMixin, DetailView):
     model = Task

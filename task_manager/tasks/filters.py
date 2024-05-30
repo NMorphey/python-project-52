@@ -31,9 +31,3 @@ class TaskFilter(django_filters.FilterSet):
     class Meta:
         model = Task
         fields = ['status', 'executor', 'label', 'self_tasks']
-
-    @property
-    def qs(self):
-        parent = super().qs
-        self.request = self.data.get('request', None)
-        return parent
