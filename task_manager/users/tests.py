@@ -1,8 +1,9 @@
 from django.urls import reverse_lazy
-from task_manager.utils import SetUpClient, SetUpUsers, CheckFlashMixin
+from task_manager.utils import SetUpTestCase, CheckFlashMixin
+from django.test import TestCase
 
 
-class GuestUserTestCase(SetUpClient):
+class GuestUserTestCase(TestCase):
 
     def test_users_index_avalable(self):
         response = self.client.get(reverse_lazy('users_index'))
@@ -15,7 +16,7 @@ class GuestUserTestCase(SetUpClient):
         self.assertEqual(response.status_code, 200)
 
 
-class CRUDTestCase(SetUpUsers, CheckFlashMixin):
+class CRUDTestCase(SetUpTestCase, CheckFlashMixin):
 
     def test_registration(self):
         response = self.client.post(reverse_lazy('registration'), {
@@ -72,8 +73,13 @@ class CRUDTestCase(SetUpUsers, CheckFlashMixin):
         self.check_flash(response,
                          'You are not authorized to modify other users.')
 
-        update_data = self.user_2_data
-        update_data['username'] = 'some_new_username'
+        update_data = {
+            'first_name': self.user_2.first_name,
+            'last_name': self.user_2.last_name,
+            'username': self.user_2.username,
+            'password1': self.user_2_login_data['password'],
+            'password2': self.user_2_login_data['password']
+        }
         response = self.client.post(
             reverse_lazy('update_user', kwargs={'pk': 2}), update_data
         )
@@ -88,8 +94,13 @@ class CRUDTestCase(SetUpUsers, CheckFlashMixin):
     def test_update(self):
         self.client.post(reverse_lazy('login'), self.user_1_login_data)
 
-        update_data = self.user_1_data
-        update_data['first_name'] = 'Updated'
+        update_data = {
+            'first_name': 'Updated',
+            'last_name': self.user_1.last_name,
+            'username': self.user_1.username,
+            'password1': self.user_1_login_data['password'],
+            'password2': self.user_1_login_data['password']
+        }
         response = self.client.post(
             reverse_lazy('update_user', kwargs={'pk': 1}), update_data
         )
@@ -101,12 +112,12 @@ class CRUDTestCase(SetUpUsers, CheckFlashMixin):
         self.assertNotContains(response, 'User Testov')
 
     def test_delete(self):
-        self.client.post(reverse_lazy('login'), self.user_1_login_data)
+        self.client.post(reverse_lazy('login'), self.user_3_login_data)
 
         response = self.client.post(
-            reverse_lazy('delete_user', kwargs={'pk': 1}))
+            reverse_lazy('delete_user', kwargs={'pk': 3}))
         self.assertRedirects(response, reverse_lazy('users_index'))
         self.check_flash(response, 'User deleted successfully')
 
         response = self.client.get(reverse_lazy('users_index'))
-        self.assertNotContains(response, 'User Testov')
+        self.assertNotContains(response, self.user_3.get_full_name)
