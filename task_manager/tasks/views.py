@@ -3,15 +3,17 @@ from task_manager.tasks.models import Task
 from task_manager.utils import LoginRequiredMixin
 from task_manager.tasks.filters import TaskFilter
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic import CreateView, UpdateView, DeleteView, ListView
+from django.views.generic import CreateView, UpdateView, DeleteView
+from django_filters.views import FilterView
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
 
 
-class TasksIndexView(LoginRequiredMixin, ListView):
+class TasksIndexView(LoginRequiredMixin, FilterView):
     template_name = 'tasks/index.html'
     model = Task
     fields = ['id', 'name', 'status', 'author', 'executor', 'created_at']
+    filterset_class = TaskFilter
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -19,15 +21,6 @@ class TasksIndexView(LoginRequiredMixin, ListView):
             self.request.GET, queryset=queryset, request=self.request
         )
         return filter.qs
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['filter'] = TaskFilter(
-            self.request.GET,
-            queryset=self.get_queryset(),
-            request=self.request
-        )
-        return context
 
 
 class TaskDetailView(LoginRequiredMixin, DetailView):
