@@ -1,6 +1,7 @@
 from django.shortcuts import redirect
 from task_manager.users.forms import UserForm, UserUpdateForm
-from task_manager.utils import error_flash, LoginRequiredMixin
+from task_manager.utils import LoginRequiredMixin
+from django.contrib.messages import error
 from django.views.generic import ListView, DeleteView, UpdateView, CreateView
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
@@ -51,5 +52,5 @@ class DeleteUserView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         try:
             return super().dispatch(request, *args, **kwargs)
         except ProtectedError:
-            error_flash(request, 'Assigned user cannot be deleted')
+            error(request, _('Assigned user cannot be deleted'))
             return redirect('users_index')

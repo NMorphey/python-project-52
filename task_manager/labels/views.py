@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 from task_manager.labels.models import Label
-from task_manager.utils import error_flash
+from django.contrib.messages import error
 from django.db.models.deletion import ProtectedError
 from task_manager.utils import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -56,5 +56,5 @@ class LabelDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         try:
             return super().dispatch(request, *args, **kwargs)
         except ProtectedError:
-            error_flash(request, 'Assigned label cannot be deleted')
+            error(request, _('Assigned label cannot be deleted'))
             return redirect('label_index')

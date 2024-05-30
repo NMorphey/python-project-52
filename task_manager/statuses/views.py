@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 from task_manager.statuses.models import Status
-from task_manager.utils import error_flash
+from django.contrib.messages import error
 from django.db.models.deletion import ProtectedError
 from task_manager.utils import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -56,5 +56,5 @@ class StatusDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         try:
             return super().dispatch(request, *args, **kwargs)
         except ProtectedError:
-            error_flash(request, 'Assigned status cannot be deleted')
+            error(request, _('Assigned status cannot be deleted'))
             return redirect('status_index')

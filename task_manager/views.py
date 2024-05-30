@@ -2,7 +2,7 @@ from django.views import View
 from django.shortcuts import render
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
-from task_manager.utils import success_flash
+from django.contrib.messages import success
 from django.utils.translation import gettext_lazy as _
 
 
@@ -21,5 +21,5 @@ class CustomLogoutView(LogoutView):
 
     def dispatch(self, request, *args, **kwargs):
         response = super().dispatch(request, *args, **kwargs)
-        success_flash(request, 'Logged out')
+        success(request, _('Logged out'))
         return response

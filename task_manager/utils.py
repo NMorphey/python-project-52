@@ -1,4 +1,4 @@
-from django.contrib import messages
+from django.contrib.messages import error
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.mixins import LoginRequiredMixin as LRM
 from django.urls import reverse_lazy
@@ -7,24 +7,11 @@ from django.test import TestCase, Client
 from django.contrib.messages import get_messages
 
 
-# Flash-messages
-def success_flash(request, message):
-    messages.success(request, _(message))
-
-
-def error_flash(request, message):
-    messages.error(request, _(message))
-
-
-def info_flash(request, message):
-    messages.info(request, _(message))
-
-
 # Mixin
 class LoginRequiredMixin(LRM):
 
     def handle_no_permission(self):
-        messages.error(
+        error(
             self.request,
             _('This can be done only by an authenticated user!')
         )
