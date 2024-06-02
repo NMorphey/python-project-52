@@ -7,13 +7,13 @@ from django.utils.translation import gettext_lazy as _
 class GuestUserTestCase(TestCase):
 
     def test_users_index_avalable(self):
-        response = self.client.get(reverse_lazy('users_index'))
+        response = self.client.get(reverse_lazy('user_index'))
         self.assertEqual(response.status_code, 200)
 
     def test_signup_and_singin_avalable(self):
-        response = self.client.get(reverse_lazy('users_index'))
+        response = self.client.get(reverse_lazy('user_index'))
         self.assertEqual(response.status_code, 200)
-        response = self.client.get(reverse_lazy('users_index'))
+        response = self.client.get(reverse_lazy('user_index'))
         self.assertEqual(response.status_code, 200)
 
 
@@ -31,7 +31,7 @@ class CRUDTestCase(SetUpTestCase):
         self.assertContains(response, _('The user created successfully'))
 
     def test_set_up(self):
-        response = self.client.get(reverse_lazy('users_index'))
+        response = self.client.get(reverse_lazy('user_index'))
         self.assertContains(response, 'User Testov')
 
     def test_allowed_to_sign_in(self):
@@ -50,17 +50,17 @@ class CRUDTestCase(SetUpTestCase):
         response = self.client.get(
             reverse_lazy('delete_user', kwargs={'pk': 2}, follow=True)
         )
-        self.assertRedirects(response, reverse_lazy('users_index'))
+        self.assertRedirects(response, reverse_lazy('user_index'))
         self.assertContains(response,
                             _('You are not authorized to modify other users.'))
 
         response = self.client.post(
             reverse_lazy('delete_user', kwargs={'pk': 2}), follow=True)
-        self.assertRedirects(response, reverse_lazy('users_index'))
+        self.assertRedirects(response, reverse_lazy('user_index'))
         self.assertContains(response,
                             _('You are not authorized to modify other users.'))
 
-        response = self.client.get(reverse_lazy('users_index'))
+        response = self.client.get(reverse_lazy('user_index'))
         self.assertContains(response, 'another_user')
 
     def test_cannot_update_other_users(self):
@@ -70,7 +70,7 @@ class CRUDTestCase(SetUpTestCase):
         response = self.client.get(
             reverse_lazy('update_user', kwargs={'pk': 2}), follow=True
         )
-        self.assertRedirects(response, reverse_lazy('users_index'))
+        self.assertRedirects(response, reverse_lazy('user_index'))
         self.assertContains(response,
                             _('You are not authorized to modify other users.'))
 
@@ -85,11 +85,11 @@ class CRUDTestCase(SetUpTestCase):
             reverse_lazy('update_user', kwargs={'pk': 2}),
             update_data, follow=True
         )
-        self.assertRedirects(response, reverse_lazy('users_index'))
+        self.assertRedirects(response, reverse_lazy('user_index'))
         self.assertContains(response,
                             _('You are not authorized to modify other users.'))
 
-        response = self.client.get(reverse_lazy('users_index'))
+        response = self.client.get(reverse_lazy('user_index'))
         self.assertContains(response, 'another_user')
         self.assertNotContains(response, 'some_new_username')
 
@@ -107,10 +107,10 @@ class CRUDTestCase(SetUpTestCase):
             reverse_lazy('update_user', kwargs={'pk': 1}),
             update_data, follow=True
         )
-        self.assertRedirects(response, reverse_lazy('users_index'))
+        self.assertRedirects(response, reverse_lazy('user_index'))
         self.assertContains(response, _('User updated successfully'))
 
-        response = self.client.get(reverse_lazy('users_index'))
+        response = self.client.get(reverse_lazy('user_index'))
         self.assertContains(response, 'Updated Testov')
         self.assertNotContains(response, 'User Testov')
 
@@ -119,8 +119,8 @@ class CRUDTestCase(SetUpTestCase):
 
         response = self.client.post(
             reverse_lazy('delete_user', kwargs={'pk': 3}), follow=True)
-        self.assertRedirects(response, reverse_lazy('users_index'))
+        self.assertRedirects(response, reverse_lazy('user_index'))
         self.assertContains(response, _('User deleted successfully'))
 
-        response = self.client.get(reverse_lazy('users_index'))
+        response = self.client.get(reverse_lazy('user_index'))
         self.assertNotContains(response, self.user_3.get_full_name)

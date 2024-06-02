@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <ul class="navbar-nav">
             <a href="{% url 'main_page' %}" class="navbar-brand">{% trans "Task manager" %}</a>
-            <li class="nav-item"><a href="{% url 'users_index' %}" class="nav-link">{% trans "Users" %}</a></li>
+            <li class="nav-item"><a href="{% url 'user_index' %}" class="nav-link">{% trans "Users" %}</a></li>
             {% if request.user.is_authenticated %}
             <li class="nav-item"><a href="{% url 'status_index' %}" class="nav-link">{% trans "Statuses" %}</a></li>
             <li class="nav-item"><a href="{% url 'label_index' %}" class="nav-link">{% trans "Labels" %}</a></li>

@@ -33,7 +33,7 @@ class UpdateUserView(LoginRequiredMixin, SuccessMessageMixin,
     form_class = UserUpdateForm
     template_name = 'users/update.html'
     context_object_name = 'user'
-    success_url = reverse_lazy('users_index')
+    success_url = reverse_lazy('user_index')
     success_message = _('User updated successfully')
 
     def dispatch(self, request, *args, **kwargs):
@@ -44,7 +44,7 @@ class UpdateUserView(LoginRequiredMixin, SuccessMessageMixin,
 
     def handle_no_permission(self):
         error(self.request, _('You are not authorized to modify other users.'))
-        return redirect(reverse_lazy('users_index'))
+        return redirect(reverse_lazy('user_index'))
 
 
 class DeleteUserView(LoginRequiredMixin, SuccessMessageMixin,
@@ -53,7 +53,7 @@ class DeleteUserView(LoginRequiredMixin, SuccessMessageMixin,
     model = User
     template_name = 'users/delete.html'
     context_object_name = 'user'
-    success_url = reverse_lazy('users_index')
+    success_url = reverse_lazy('user_index')
     success_message = _('User deleted successfully')
 
     def dispatch(self, request, *args, **kwargs):
@@ -61,11 +61,11 @@ class DeleteUserView(LoginRequiredMixin, SuccessMessageMixin,
             return super().dispatch(request, *args, **kwargs)
         except ProtectedError:
             error(request, _('Assigned user cannot be deleted'))
-            return redirect('users_index')
+            return redirect('user_index')
 
     def test_func(self):
         return self.request.user.id == self.kwargs['pk']
 
     def handle_no_permission(self):
         error(self.request, _('You are not authorized to modify other users.'))
-        return redirect(reverse_lazy('users_index'))
+        return redirect(reverse_lazy('user_index'))
