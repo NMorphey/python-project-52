@@ -8,6 +8,7 @@ from django.contrib.auth import get_user_model
 from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
 from task_manager.tasks.models import Task
+from django.db.models.deletion import ProtectedError
 
 
 # Mixin
@@ -19,6 +20,17 @@ class LoginRequiredMixin(LRM):
             _('This can be done only by an authenticated user!')
         )
         return redirect(reverse_lazy('login'))
+
+
+class HandleProtectedError:
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            return super().dispatch(request, *args, **kwargs)
+        except ProtectedError:
+            model_name = self.__class__.model.__name__.lower()
+            error(request, _(f'Assigned {model_name} cannot be deleted'))
+            return redirect(f'{model_name}_index')
 
 
 # Tests Mixins

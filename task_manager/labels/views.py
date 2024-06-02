@@ -1,8 +1,5 @@
-from django.shortcuts import redirect
 from task_manager.labels.models import Label
-from django.contrib.messages import error
-from django.db.models.deletion import ProtectedError
-from task_manager.utils import LoginRequiredMixin
+from task_manager.utils import LoginRequiredMixin, HandleProtectedError
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.utils.translation import gettext_lazy as _
@@ -41,7 +38,8 @@ class LabelUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         return context
 
 
-class LabelDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+class LabelDeleteView(LoginRequiredMixin, HandleProtectedError,
+                      SuccessMessageMixin, DeleteView):
     model = Label
     template_name = 'common/delete.html'
     success_message = _('The label was deleted')
@@ -51,10 +49,3 @@ class LabelDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         context = super().get_context_data(**kwargs)
         context['header'] = _('Delete label')
         return context
-
-    def dispatch(self, request, *args, **kwargs):
-        try:
-            return super().dispatch(request, *args, **kwargs)
-        except ProtectedError:
-            error(request, _('Assigned label cannot be deleted'))
-            return redirect('label_index')

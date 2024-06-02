@@ -1,11 +1,10 @@
 from django.shortcuts import redirect
 from task_manager.users.forms import UserForm, UserUpdateForm
-from task_manager.utils import LoginRequiredMixin
+from task_manager.utils import LoginRequiredMixin, HandleProtectedError
 from django.contrib.messages import error
 from django.views.generic import ListView, DeleteView, UpdateView, CreateView
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models.deletion import ProtectedError
 from django.utils.translation import gettext_lazy as _
 from task_manager.users.models import User
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -47,21 +46,15 @@ class UpdateUserView(LoginRequiredMixin, SuccessMessageMixin,
         return redirect(reverse_lazy('user_index'))
 
 
-class DeleteUserView(LoginRequiredMixin, SuccessMessageMixin,
-                     UserPassesTestMixin, DeleteView):
+class DeleteUserView(
+        LoginRequiredMixin, SuccessMessageMixin, HandleProtectedError,
+        UserPassesTestMixin, DeleteView):
 
     model = User
     template_name = 'users/delete.html'
     context_object_name = 'user'
     success_url = reverse_lazy('user_index')
     success_message = _('User deleted successfully')
-
-    def dispatch(self, request, *args, **kwargs):
-        try:
-            return super().dispatch(request, *args, **kwargs)
-        except ProtectedError:
-            error(request, _('Assigned user cannot be deleted'))
-            return redirect('user_index')
 
     def test_func(self):
         return self.request.user.id == self.kwargs['pk']
