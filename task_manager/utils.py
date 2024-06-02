@@ -4,7 +4,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin as LRM
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.test import TestCase
-from django.contrib.messages import get_messages
 from django.contrib.auth import get_user_model
 from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
@@ -66,10 +65,3 @@ class SetUpSignedInClient(SetUpTestCase):
     def setUp(self):
         super().setUp()
         self.client.post(reverse_lazy('login'), self.user_1_login_data)
-
-
-class CheckFlashMixin:
-
-    def check_flash(self, response, message):
-        messages = list(get_messages(response.wsgi_request))
-        self.assertEqual(str(messages[-1]), _(message))
