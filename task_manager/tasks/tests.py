@@ -68,12 +68,11 @@ class CRUDTestCase(SetUpSignedInClient):
         self.assertContains(response, 'renamed_task')
 
 
-class QueryAndProtectionTestCase(SetUpTestCase):
+class QueryTestCase(SetUpTestCase):
 
     def setUp(self):
         super().setUp()
         self.client.post(reverse_lazy('login'), self.user_2_login_data)
-        # Client stays logged in as user 2
 
     def test_status_search(self):
         response = self.client.get(reverse_lazy('task_index'), {'status': 1})
@@ -119,6 +118,13 @@ class QueryAndProtectionTestCase(SetUpTestCase):
         self.assertNotContains(response, self.task_1.name)
         self.assertNotContains(response, self.task_2.name)
         self.assertContains(response, self.task_3.name)
+
+
+class ProtectionsTestCase(SetUpTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.client.post(reverse_lazy('login'), self.user_2_login_data)
 
     def test_protections(self):
         response = self.client.post(
