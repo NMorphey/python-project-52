@@ -7,8 +7,8 @@ from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models.deletion import ProtectedError
 from django.utils.translation import gettext_lazy as _
-from task_manager.users.utils import check_access_to_modify
 from task_manager.users.models import User
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 
 class UsersIndexView(ListView):
@@ -26,7 +26,8 @@ class RegistrationView(SuccessMessageMixin, CreateView):
     success_message = _('The user created successfully')
 
 
-class UpdateUserView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+class UpdateUserView(LoginRequiredMixin, SuccessMessageMixin,
+                     UserPassesTestMixin, UpdateView):
 
     model = User
     form_class = UserUpdateForm
@@ -35,22 +36,36 @@ class UpdateUserView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     success_url = reverse_lazy('users_index')
     success_message = _('User updated successfully')
 
-    @check_access_to_modify
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
+    def test_func(self):
+        return self.request.user.id == self.kwargs['pk']
 
-class DeleteUserView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    def handle_no_permission(self):
+        error(self.request, _('You are not authorized to modify other users.'))
+        return redirect(reverse_lazy('users_index'))
+
+
+class DeleteUserView(LoginRequiredMixin, SuccessMessageMixin,
+                     UserPassesTestMixin, DeleteView):
+
     model = User
     template_name = 'users/delete.html'
     context_object_name = 'user'
     success_url = reverse_lazy('users_index')
     success_message = _('User deleted successfully')
 
-    @check_access_to_modify
     def dispatch(self, request, *args, **kwargs):
         try:
             return super().dispatch(request, *args, **kwargs)
         except ProtectedError:
             error(request, _('Assigned user cannot be deleted'))
             return redirect('users_index')
+
+    def test_func(self):
+        return self.request.user.id == self.kwargs['pk']
+
+    def handle_no_permission(self):
+        error(self.request, _('You are not authorized to modify other users.'))
+        return redirect(reverse_lazy('users_index'))
