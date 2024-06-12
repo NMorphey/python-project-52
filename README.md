@@ -1,13 +1,10 @@
-# Task manager (WIP)
+# Task manager
 
 ### About
-**Task manager** is a web application for scheduling tasks. It is as a pet-project, that was created as the final task of the [programming course](https://hexlet.io/programs/python) i was taking. You can try it by using the link below or deploying and running it on any hosting (check guide below). The main tool used for develompent is Django framework (v. 5) for Python.
+**Task manager** is a web application for scheduling tasks. It is as a pet-project, that was created as the final task of the [programming course](https://hexlet.io/programs/python) i was taking. You can try it by deploying and running it on any hosting (check guide below). The main tool used for develompent is Django framework (v. 5) for Python.
 
 ### Tests and linter status, CodeClimate:
 [![Actions Status](https://github.com/NMorphey/python-project-52/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/NMorphey/python-project-52/actions) [![CI](https://github.com/NMorphey/python-project-52/actions/workflows/CI.yml/badge.svg)](https://github.com/NMorphey/python-project-52/actions/workflows/CI.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/6e000bb9682bd74c7db9/maintainability)](https://codeclimate.com/github/NMorphey/python-project-52/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/6e000bb9682bd74c7db9/test_coverage)](https://codeclimate.com/github/NMorphey/python-project-52/test_coverage)
-
-### Deployed
-https://taskmanager-ny6t.onrender.com  
 
 ### How to deploy or run locally
 #### Package can be installed with following command:
